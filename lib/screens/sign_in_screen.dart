@@ -1,12 +1,9 @@
 //import 'dart:math';
-
 //import 'dart:nativewrappers/_internal/vm/lib/ffi_native_type_patch.dart';
-
-import 'package:art_marketplace/screens.dart/sign_up_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:google_sign_in/google_sign_in.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:art_marketplace/auth_provider.dart';
+import 'package:provider/provider.dart';
 
 class CustomTextFeild extends StatelessWidget {
   final String hint;
@@ -59,6 +56,7 @@ class _SignInScreenState extends State<SignInScreen> {
   final TextEditingController _emailcontroller = TextEditingController();
   // final TextEditingController _usernamecontroller = TextEditingController();
   final TextEditingController _passwordcontroller = TextEditingController();
+
   @override
   void dispose() {
     _emailcontroller.dispose();
@@ -126,7 +124,7 @@ class _SignInScreenState extends State<SignInScreen> {
                   onPressed: () {
                     ///////////////////////////////////////////////back.
                   },
-                  child: Text("log in"),
+                  child: Text("log in", style: TextStyle(fontSize: 16)),
                 ),
               ),
               SizedBox(height: 10),
@@ -145,29 +143,55 @@ class _SignInScreenState extends State<SignInScreen> {
                 ),
               ),
               SizedBox(height: 50),
-              SizedBox(
-                width: MediaQuery.of(context).size.width * 0.8,
-                height: 40,
-                child: OutlinedButton(
-                  style: OutlinedButton.styleFrom(
-                    fixedSize: Size(400, 30),
-                    foregroundColor: Colors.black,
-                    overlayColor: Colors.blueAccent,
-                  ),
-                  onPressed: () {},
-                  child: Text(
-                    "log in with google",
-                    style: TextStyle(fontSize: 15),
-                  ),
-                ),
+              Consumer<AuthProvider>(
+                builder: (context, auth, child) {
+                  return SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.8,
+                    height: 50,
+
+                    child: OutlinedButton(
+                      style: OutlinedButton.styleFrom(
+                        foregroundColor: Colors.black,
+                        overlayColor: Colors.blueAccent,
+                      ),
+                      onPressed: auth.isLoading
+                          ? null
+                          : () {
+                              auth.signIn();
+                            },
+                      child: auth.isLoading
+                          ? const SizedBox(
+                              height: 20,
+                              width: 20,
+                              child: CircularProgressIndicator(strokeWidth: 2),
+                            )
+                          : Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Image.asset(
+                                  'assets/images/Google_logo.webp',
+                                  height: 20,
+                                  width: 20,
+                                  fit: BoxFit.contain,
+                                ),
+                                SizedBox(width: 10),
+                                const Text(
+                                  "Log in with Google",
+                                  style: TextStyle(fontSize: 16),
+                                ),
+                              ],
+                            ),
+                    ),
+                  );
+                },
               ),
+
               SizedBox(height: 20),
               SizedBox(
                 width: MediaQuery.of(context).size.width * 0.8,
-                height: 40,
+                height: 50,
                 child: OutlinedButton(
                   style: OutlinedButton.styleFrom(
-                    fixedSize: Size(400, 30),
                     foregroundColor: const Color.fromARGB(255, 72, 78, 239),
                     overlayColor: Colors.blueAccent,
                     //surfaceTintColor: Colors.blueAccent,
@@ -177,12 +201,9 @@ class _SignInScreenState extends State<SignInScreen> {
                     // disabledForegroundColor: Colors.blueAccent,
                   ),
                   onPressed: () {
-                    Navigator.pushReplacementNamed(context, '/SignUpScreen');
+                    Navigator.pushNamed(context, '/SignUp');
                   },
-                  child: Text(
-                    "sign up, creat new account",
-                    style: TextStyle(fontSize: 15),
-                  ),
+                  child: Text("sign up", style: TextStyle(fontSize: 16)),
                 ),
               ),
             ],

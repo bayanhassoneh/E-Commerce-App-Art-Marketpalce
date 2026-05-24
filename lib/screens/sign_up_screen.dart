@@ -10,6 +10,17 @@ class SignUpScreen extends StatefulWidget {
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
+  final TextEditingController _emailcontroller = TextEditingController();
+  // final TextEditingController _usernamecontroller = TextEditingController();
+  final TextEditingController _passwordcontroller = TextEditingController();
+
+  @override
+  void dispose() {
+    _emailcontroller.dispose();
+    _passwordcontroller.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

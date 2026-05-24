@@ -1,48 +1,59 @@
-import 'package:art_marketplace/screens.dart/cart_screen.dart';
-import 'package:art_marketplace/screens.dart/product_screen.dart';
-import 'package:art_marketplace/screens.dart/profile_screen.dart';
-import 'package:art_marketplace/screens.dart/set_password_screen.dart';
+import 'package:art_marketplace/screens/cart_screen.dart';
+import 'package:art_marketplace/screens/product_screen.dart';
+import 'package:art_marketplace/screens/profile_screen.dart';
+import 'package:art_marketplace/screens/set_password_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 //import 'package:flutter/foundation.dart';
+////for DebugDefaultTargetPlatformOverride,could use for compute function(processing heavy stuff)
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'auth_wrapper.dart'; //لاحقا
-import 'screens.dart/sign_in_screen.dart';
-import 'screens.dart/home_screen.dart';
-import 'screens.dart/sign_up_screen.dart';
-//مبدئياااااااااااااااااا
+import 'auth_wrapper.dart';
+import 'package:art_marketplace/screens/sign_in_screen.dart';
+import 'package:art_marketplace/screens/home_screen.dart';
+import 'package:art_marketplace/screens/sign_up_screen.dart';
+import 'package:art_marketplace/auth_provider.dart';
+import 'package:provider/provider.dart';
 
 // void main() {
 //   debugDefaultTargetPlatformOverride = TargetPlatform.iOS;
 //   runApp(MyApp());
 // }
-void main() {
-  // تأكدي إنك عملتي Initialize لسوبابيز هون
-  // await Supabase.initialize(
-  //   url: 'YOUR_SUPABASE_URL',
-  //   anonKey: 'YOUR_ANON_KEY',
-  // );
-  runApp(const MyApp());
+//i use it to check ios emulater
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized(); //it accure when runapp,but i used await so i should ensure first
+  try {
+    await Supabase.initialize(
+      url: 'https://pjvkgmqbztlgzzacesob.supabase.co',
+      anonKey:
+          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBqdmtnbXFienRsZ3p6YWNlc29iIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUzNDI2MjAsImV4cCI6MjA5MDkxODYyMH0.SLMkP59YXQZYawnyTiyRkwyMPWSROSNisKc_zWDqMsw',
+    );
+  } catch (e) {
+    print("Supabase Initialization Error: $e");
+  }
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => AuthProvider()..init()),
+      ],
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       initialRoute: '/',
       routes: {
-        '/': (context) => HomePage(title: 'home'),
-
-        ///there is a problem here!!!!!!!!!!!!!!!!!!!!!!!!!!
+        '/': (context) => AuthWrapper(),
+        '/home': (context) => HomePage(title: 'home'),
         '/SignIn': (context) => SignInScreen(),
         '/SignUp': (context) => SignUpScreen(),
         '/Wrappr': (context) => AuthWrapper(),
-        '/Profile': (context) => ProfileScreen(
-          title: "profile",
-        ), //what this title that requiered?????????????????????????
+        '/Profile': (context) => ProfileScreen(title: "profile"),
         '/Cart': (context) => CartScreen(title: 'cart'),
         '/Product': (context) => ProductScreen(title: 'product'),
         '/SetPassword': (context) => SetPasswordScreen(title: "set password"),
@@ -51,13 +62,10 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'PayPaint ',
       theme: ThemeData(
-        colorScheme: .fromSeed(
+        colorScheme: ColorScheme.fromSeed(
           seedColor: const Color.fromARGB(255, 255, 255, 255),
         ),
       ),
-
-      home:
-          const SignInScreen(), ////////////compare seriously!>>>>>>>>>>>>>>>>>>>>>>>>>>>
     );
   }
 }
