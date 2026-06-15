@@ -3,7 +3,8 @@
 -- profiles table
 create table public.profiles (
 id uuid references auth.users(id) on delete cascade primary key,
-user_name text unique not null,
+email text not null ,
+user_name text unique,
 cover_url text,
 bio text,
 joined_date timestamp with time zone default timezone('utc'::text, now()) not null

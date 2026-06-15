@@ -1,9 +1,10 @@
 import 'package:art_marketplace/screens/cart_screen.dart';
 import 'package:art_marketplace/screens/product_screen.dart';
 import 'package:art_marketplace/screens/profile_screen.dart';
-import 'package:art_marketplace/screens/set_password_screen.dart';
+import 'package:art_marketplace/screens/forgot_password_screen.dart';
+import 'package:art_marketplace/screens/reset_password_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
+// import 'package:flutter/cupertino.dart';
 //import 'package:flutter/foundation.dart';
 ////for DebugDefaultTargetPlatformOverride,could use for compute function(processing heavy stuff)
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -11,8 +12,10 @@ import 'auth_wrapper.dart';
 import 'package:art_marketplace/screens/sign_in_screen.dart';
 import 'package:art_marketplace/screens/home_screen.dart';
 import 'package:art_marketplace/screens/sign_up_screen.dart';
-import 'package:art_marketplace/auth_provider.dart';
+import 'package:art_marketplace/providers/auth_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:art_marketplace/screens/Completeprofilescreen.dart';
+import 'core/navigation.dart';
 
 // void main() {
 //   debugDefaultTargetPlatformOverride = TargetPlatform.iOS;
@@ -30,6 +33,7 @@ void main() async {
   } catch (e) {
     print("Supabase Initialization Error: $e");
   }
+
   runApp(
     MultiProvider(
       providers: [
@@ -41,22 +45,26 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
+  MyApp({super.key});
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      navigatorKey: navigatorKey,
       initialRoute: '/',
       routes: {
-        '/': (context) => AuthWrapper(),
-        '/home': (context) => HomePage(title: 'home'),
-        '/SignIn': (context) => SignInScreen(),
-        '/SignUp': (context) => SignUpScreen(),
-        '/Wrappr': (context) => AuthWrapper(),
-        '/Profile': (context) => ProfileScreen(title: "profile"),
-        '/Cart': (context) => CartScreen(title: 'cart'),
-        '/Product': (context) => ProductScreen(title: 'product'),
-        '/SetPassword': (context) => SetPasswordScreen(title: "set password"),
+        '/': (context) => const AuthWrapper(),
+        '/home': (context) => const HomePage(title: 'home'),
+        '/SignIn': (context) => const SignInScreen(),
+        '/SignUp': (context) => const SignUpScreen(),
+        '/Wrappr': (context) => const AuthWrapper(),
+        '/Profile': (context) => const ProfileScreen(title: "profile"),
+        '/Cart': (context) => const CartScreen(title: 'cart'),
+        '/Product': (context) => const ProductScreen(title: 'product'),
+        '/forgetPassword': (context) =>
+            const forgotPasswordScreen(title: "forgot password"),
+        '/setpassword': (context) =>
+            const SetPasswordScreen(title: "set password"),
+        '/CompleteProfile': (context) => const CompleteProfileScreen(),
       },
 
       debugShowCheckedModeBanner: false,
@@ -65,6 +73,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(
           seedColor: const Color.fromARGB(255, 255, 255, 255),
         ),
+        useMaterial3: true,
       ),
     );
   }

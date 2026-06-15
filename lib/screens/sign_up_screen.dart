@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'sign_in_screen.dart';
+import '../widgets/custom_text_field.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -10,13 +10,15 @@ class SignUpScreen extends StatefulWidget {
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _emailcontroller = TextEditingController();
-  // final TextEditingController _usernamecontroller = TextEditingController();
+  final TextEditingController _usernamecontroller = TextEditingController();
   final TextEditingController _passwordcontroller = TextEditingController();
 
   @override
   void dispose() {
     _emailcontroller.dispose();
+    _usernamecontroller.dispose();
     _passwordcontroller.dispose();
     super.dispose();
   }
@@ -38,6 +40,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       body: Padding(
         padding: const EdgeInsets.all(24.0),
         child: Form(
+          key: _formKey,
           child: Column(
             // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [

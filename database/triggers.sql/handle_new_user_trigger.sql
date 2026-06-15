@@ -2,11 +2,8 @@
 create or replace function public.handle_new_user() 
 returns trigger as $$ 
 begin
-  insert into public.profiles (id, user_name) 
-  values (
-    new.id, 
-    new.raw_user_meta_data->>'username' 
-  );
+insert into public.profiles (id) 
+  values (new.id);
   return new; 
 end;
 $$ language plpgsql security definer; 

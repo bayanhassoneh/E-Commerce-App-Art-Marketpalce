@@ -2,48 +2,10 @@
 //import 'dart:nativewrappers/_internal/vm/lib/ffi_native_type_patch.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:art_marketplace/auth_provider.dart';
+import 'package:art_marketplace/providers/auth_provider.dart';
 import 'package:provider/provider.dart';
-
-class CustomTextFeild extends StatelessWidget {
-  final String hint;
-  final TextEditingController controller;
-  final bool ispassword;
-
-  const CustomTextFeild({
-    super.key,
-    required this.hint,
-    required this.controller,
-    this.ispassword = false,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      width: MediaQuery.of(context).size.width * 0.8,
-      child: TextFormField(
-        controller: controller,
-        obscureText: ispassword,
-        decoration: InputDecoration(
-          labelText: hint,
-          labelStyle: TextStyle(color: Colors.grey),
-          border: OutlineInputBorder(),
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(15),
-            borderSide: BorderSide(color: Colors.grey),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(
-              color: const Color.fromARGB(255, 5, 13, 246),
-            ),
-            borderRadius: BorderRadius.circular(15),
-          ),
-        ),
-        validator: (value) {},
-      ),
-    );
-  }
-}
+import '../widgets/custom_text_field.dart';
+import '../widgets/custom_button.dart';
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({super.key});
@@ -53,6 +15,7 @@ class SignInScreen extends StatefulWidget {
 }
 
 class _SignInScreenState extends State<SignInScreen> {
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _emailcontroller = TextEditingController();
   // final TextEditingController _usernamecontroller = TextEditingController();
   final TextEditingController _passwordcontroller = TextEditingController();
@@ -66,6 +29,7 @@ class _SignInScreenState extends State<SignInScreen> {
 
   @override
   Widget build(BuildContext context) {
+    //final auth = Provider.of<AuthProvider>(context, listen: false);
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: PreferredSize(
@@ -81,6 +45,7 @@ class _SignInScreenState extends State<SignInScreen> {
       body: Padding(
         padding: const EdgeInsets.all(24.0),
         child: Form(
+          key: _formKey,
           child: Column(
             // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
@@ -99,35 +64,60 @@ class _SignInScreenState extends State<SignInScreen> {
                   fontSize: 20,
                 ),
               ),
-              SizedBox(height: 20),
-              CustomTextFeild(hint: "Email", controller: _emailcontroller),
+              const SizedBox(height: 20),
+              CustomTextFeild(
+                hint: "Email",
+                controller: _emailcontroller,
+                validator: (value) {
+                  if (value == null || value.trim().isEmpty) {
+                    return 'Email is required';
+                  }
+                  return null;
+                },
+              ),
 
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
 
               CustomTextFeild(
                 hint: "Password",
                 controller: _passwordcontroller,
                 ispassword: true,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Password is required';
+                  }
+                  return null;
+                },
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
 
-              SizedBox(
-                width: MediaQuery.of(context).size.width * 0.8,
-                height: 40,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color.fromARGB(255, 72, 78, 239),
-                    foregroundColor: Colors.white,
-                    //   maximumSize: Size(400, 30),
-                    //  fixedSize: Size(400, 30),
-                  ),
-                  onPressed: () {
-                    ///////////////////////////////////////////////back.
-                  },
-                  child: Text("log in", style: TextStyle(fontSize: 16)),
-                ),
+              Consumer<AuthProvider>(
+                builder: (context, auth, child) {
+                  return CustomButton(
+                    text: "log in",
+                    isLoading: auth.isLoading,
+                    onPressed: auth.isLoading
+                        ? null
+                        : () async {
+                            if (!_formKey.currentState!.validate()) {
+                              return;
+                            }
+                            try {
+                              await auth.signIn(
+                                _emailcontroller.text.trim(),
+                                _passwordcontroller.text,
+                              );
+                            } on Exception catch (e) {
+                              if (!mounted) return;
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(content: Text(e.toString())),
+                              );
+                            }
+                          },
+                  );
+                },
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               SizedBox(
                 width: MediaQuery.of(context).size.width * 0.8,
                 height: 40,
@@ -137,12 +127,12 @@ class _SignInScreenState extends State<SignInScreen> {
                     overlayColor: const Color.fromARGB(255, 214, 213, 213),
                   ),
                   onPressed: () {
-                    Navigator.pushReplacementNamed(context, '/SetPassowrd');
+                    Navigator.pushNamed(context, '/forgetPassword');
                   },
                   child: Text("forgot password?"),
                 ),
               ),
-              SizedBox(height: 50),
+              const SizedBox(height: 50),
               Consumer<AuthProvider>(
                 builder: (context, auth, child) {
                   return SizedBox(
@@ -157,7 +147,7 @@ class _SignInScreenState extends State<SignInScreen> {
                       onPressed: auth.isLoading
                           ? null
                           : () {
-                              auth.signIn();
+                              auth.googleSignIn();
                             },
                       child: auth.isLoading
                           ? const SizedBox(
@@ -174,7 +164,7 @@ class _SignInScreenState extends State<SignInScreen> {
                                   width: 20,
                                   fit: BoxFit.contain,
                                 ),
-                                SizedBox(width: 10),
+                                const SizedBox(width: 10),
                                 const Text(
                                   "Log in with Google",
                                   style: TextStyle(fontSize: 16),
