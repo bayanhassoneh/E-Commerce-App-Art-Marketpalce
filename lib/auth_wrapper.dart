@@ -84,7 +84,7 @@ class _AuthWrapperState extends State<AuthWrapper> {
     try {
       final profile = await Supabase.instance.client
           .from('profiles')
-          .select('username')
+          .select('user_name')
           .eq('id', userId)
           .maybeSingle(); // يرجع null بكل هدوء إذا كان السجل غير موجود بعد
 
@@ -93,7 +93,8 @@ class _AuthWrapperState extends State<AuthWrapper> {
         _needsUsername = true;
       } else {
         // إذا السجل موجود، نتأكد هل الحقل الخاص باليوزر نيم فارغ أم لا
-        _needsUsername = (profile['username'] == null);
+        final String? username = profile['user_name'];
+        _needsUsername = (username == null || username.trim().isEmpty);
       }
     } catch (e) {
       print("Error fetching profile inside wrapper: $e");

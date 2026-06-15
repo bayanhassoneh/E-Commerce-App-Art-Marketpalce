@@ -45,10 +45,13 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen> {
           .update({'user_name': username})
           .eq('id', userId);
 
-      if (!mounted) return;
+      // if (!mounted) return;
       // إذا الصفحة انقفلت أثناء العملية لا تكمل
-
-      Navigator.pushReplacementNamed(context, '/home');
+      if (mounted) {
+        Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false);
+      } //context>>start point, '\'>>aoth_wrapper(destination), (route) => false>>remove all previous routes
+      //هيك افضل عشان ادير الذاكره وما يضل الرابر بالخلفيه وما يحدثش التعديل اللي صار بالداتا بيز
+      // Navigator.pushReplacementNamed(context, '/home');
     } on PostgrestException catch (e) {
       if (e.code == '23505') {
         // 23505 هو رمز الخطأ لوجود تعارض في المفتاح الأساسي (Primary Key Violation) أو فريد (Unique Constraint Violation)
