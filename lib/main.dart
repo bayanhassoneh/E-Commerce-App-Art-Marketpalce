@@ -57,7 +57,10 @@ class MyApp extends StatelessWidget {
         '/SignIn': (context) => const SignInScreen(),
         '/SignUp': (context) => const SignUpScreen(),
         '/Wrappr': (context) => const AuthWrapper(),
-        '/Profile': (context) => const ProfileScreen(title: "profile"),
+        '/Profile': (context) => ProfileScreen(
+          title: "profile",
+          profileUserId: context.read<AuthProvider>().currentUserId ?? "",
+        ),
         '/Cart': (context) => const CartScreen(title: 'cart'),
         '/Product': (context) => const ProductScreen(title: 'product'),
         '/forgetPassword': (context) =>

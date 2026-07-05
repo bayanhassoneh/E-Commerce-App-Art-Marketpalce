@@ -32,10 +32,11 @@ class _forgotPasswordScreenState extends State<forgotPasswordScreen> {
         ),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(24.0),
+        padding: const EdgeInsets.all(35.0),
         child: Form(
           key: _formKey,
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               Container(height: 50),
@@ -73,15 +74,12 @@ class _forgotPasswordScreenState extends State<forgotPasswordScreen> {
                 },
               ),
               SizedBox(height: 20),
-              SizedBox(
-                width: MediaQuery.of(context).size.width * 0.8,
-                child: Text(
-                  'you may receive a link on your email to reset your password.',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 14,
-                    color: const Color.fromARGB(255, 51, 46, 58),
-                  ),
+              Text(
+                'you may receive a link on your email to reset your password.',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 14,
+                  color: const Color.fromARGB(255, 51, 46, 58),
                 ),
               ),
               SizedBox(height: 20),

@@ -6,21 +6,21 @@ id uuid references auth.users(id) on delete cascade primary key,
 email text not null ,
 user_name text unique,
 cover_url text,
+location text, 
 bio text,
 joined_date timestamp with time zone default timezone('utc'::text, now()) not null
 );
 --
+
 -- artworks table
 create table public.artworks (
   id uuid default gen_random_uuid() primary key,
 user_id uuid references public.profiles(id) on delete cascade,
   title text ,
   description text,
-  dimensions text,
   image_url text ,
   price numeric,
   is_sold boolean default false,
-  is_favorite boolean default false,
 created_at timestamp with time zone default timezone('utc'::text, now()) not null
 );
 --

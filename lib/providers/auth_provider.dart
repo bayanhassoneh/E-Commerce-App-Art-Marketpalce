@@ -4,9 +4,32 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 class AuthProvider extends ChangeNotifier {
   final AuthService _authService = AuthService();
-
+  String? _selectedMonth;
+  int? _selectedDay;
+  int? _selectedYear;
+  String? _selectedLocation;
   bool _isLoading = false;
+  String? get currentUserId => Supabase.instance.client.auth.currentUser?.id;
+  String? get selectedMonth => _selectedMonth;
+  int? get selectedDay => _selectedDay;
+  int? get selectedYear => _selectedYear;
+  String? get selectedLocation => _selectedLocation;
   bool get isLoading => _isLoading;
+
+  final List<String> monthsList = [
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December',
+  ];
 
   Future<void> init() async {
     await _authService.initGoogle();
@@ -65,20 +88,62 @@ class AuthProvider extends ChangeNotifier {
     }
   }
 
-  Future<void> signUp(String email, String password) async {
+  Future<bool> signUp({
+    required String email,
+    required String password,
+    required String username,
+  }) async {
+    if (_selectedMonth == null ||
+        _selectedDay == null ||
+        _selectedYear == null) {
+      throw Exception("Please select your complete birthday.");
+    }
+    if (_selectedLocation == null) {
+      throw Exception("Please select your location.");
+    }
     _isLoading = true;
     notifyListeners();
+
     try {
-      await _authService.signUp(email, password);
+      int monthNumber = monthsList.indexOf(_selectedMonth!) + 1;
+      DateTime birthday = DateTime(_selectedYear!, monthNumber, _selectedDay!);
+      String location = _selectedLocation!;
+      await _authService.signUp(
+        email: email,
+        password: password,
+        username: username,
+        birthday: birthday,
+        location: location,
+      );
+      return true;
+    } catch (e) {
+      rethrow;
     } finally {
       _isLoading = false;
       notifyListeners();
     }
   }
 
-  // Future<bool> needsUsername() async {
-  //   return await _authService.needsUsername();
-  // }
+  void updateMonth(String? month) {
+    _selectedMonth = month;
+    notifyListeners(); // هذا السطر هو البديل السحري لـ setState، يقوم بإعلام الواجهات لتحديث نفسها
+  }
+
+  void updateDay(int? day) {
+    _selectedDay = day;
+    notifyListeners();
+  }
+
+  void updateYear(int? year) {
+    _selectedYear = year;
+    notifyListeners();
+  }
+
+  void updateLocation(String? location) {
+    _selectedLocation = location;
+    notifyListeners();
+  }
+
   Future<void> signOut() async {
     await _authService.signOut();
     notifyListeners();

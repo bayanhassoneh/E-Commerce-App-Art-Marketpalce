@@ -43,10 +43,11 @@ class _SignInScreenState extends State<SignInScreen> {
         ),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(24.0),
+        padding: const EdgeInsets.all(35.0),
         child: Form(
           key: _formKey,
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               Container(height: 100),
@@ -118,27 +119,23 @@ class _SignInScreenState extends State<SignInScreen> {
                 },
               ),
               const SizedBox(height: 10),
-              SizedBox(
-                width: MediaQuery.of(context).size.width * 0.8,
-                height: 40,
-                child: TextButton(
-                  style: TextButton.styleFrom(
-                    foregroundColor: Colors.black,
-                    overlayColor: const Color.fromARGB(255, 214, 213, 213),
-                  ),
-                  onPressed: () {
-                    Navigator.pushNamed(context, '/forgetPassword');
-                  },
-                  child: Text("forgot password?"),
+
+              TextButton(
+                style: TextButton.styleFrom(
+                  foregroundColor: Colors.black,
+                  overlayColor: const Color.fromARGB(255, 214, 213, 213),
                 ),
+                onPressed: () {
+                  Navigator.pushNamed(context, '/forgetPassword');
+                },
+                child: Text("forgot password?"),
               ),
+
               const SizedBox(height: 50),
               Consumer<AuthProvider>(
                 builder: (context, auth, child) {
                   return SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.8,
                     height: 50,
-
                     child: OutlinedButton(
                       style: OutlinedButton.styleFrom(
                         foregroundColor: Colors.black,
@@ -178,7 +175,6 @@ class _SignInScreenState extends State<SignInScreen> {
 
               SizedBox(height: 20),
               SizedBox(
-                width: MediaQuery.of(context).size.width * 0.8,
                 height: 50,
                 child: OutlinedButton(
                   style: OutlinedButton.styleFrom(

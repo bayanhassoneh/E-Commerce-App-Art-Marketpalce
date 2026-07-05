@@ -35,23 +35,22 @@ class _SetPasswordScreenState extends State<SetPasswordScreen> {
         ),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(24.0),
+        padding: const EdgeInsets.all(35.0),
         child: Form(
           key: _formKey,
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               Container(height: 50),
-              SizedBox(
-                width: MediaQuery.of(context).size.width * 0.8,
-                child: Text(
-                  'enter your new password.',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18,
-                    color: const Color.fromARGB(255, 51, 46, 58),
-                    fontStyle: FontStyle.normal,
-                  ),
+
+              Text(
+                'enter your new password.',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18,
+                  color: const Color.fromARGB(255, 51, 46, 58),
+                  fontStyle: FontStyle.normal,
                 ),
               ),
               SizedBox(height: 20),

@@ -65,55 +65,30 @@ class AuthService {
     }
   }
 
-  // Future<void> _handleAuthEvent(GoogleSignInAuthenticationEvent event) async {
-  //   print('EVENT ARRIVED');
-  //   switch (event) {
-  //     case GoogleSignInAuthenticationEventSignIn():
-  //       print('Google Sign In Event');
-  //       final user = event.user;
-  //       print(user.email);
-  //       // var auth = await user.authorizationClient.authorizationForScopes(
-  //       //   scopes,
-  //       // );
-  //       // auth ??= await user.authorizationClient.authorizeScopes(scopes);
-  //       // final idToken = user.authentication.idToken;
-  //       // final accessToken = auth.accessToken;
-
-  //       final googleAuth = await user.authentication;
-  //       final idToken = googleAuth.idToken;
-  //       // final accessToken = googleAuth.accessToken;
-
-  //       if (idToken == null) {
-  //         print('No ID Token');
-  //         return;
-  //       }
-  //       var auth = await user.authorizationClient.authorizationForScopes(
-  //         scopes,
-  //       );
-  //       auth ??= await user.authorizationClient.authorizeScopes(scopes);
-  //       final accessToken = auth.accessToken;
-
-  //       await _supabase.auth.signInWithIdToken(
-  //         provider: OAuthProvider.google,
-  //         idToken: idToken,
-  //         accessToken: accessToken,
-  //       );
-  //       print('Signed in successfully!');
-  //       break;
-
-  //     case GoogleSignInAuthenticationEventSignOut():
-  //       break;
-  //   }
-  // }
-
-  Future<void> signUp(String email, String password) async {
-    try {
-      await _supabase.auth.signUp(email: email, password: password);
-    } on AuthException catch (e) {
-      throw Exception(e.message);
-    } catch (e) {
-      throw 'An unexpected error occurred: $e';
+  Future<void> signUp({
+    required String email,
+    required String password,
+    required String username,
+    required DateTime birthday,
+    required String location,
+  }) async {
+    final AuthResponse response = await _supabase.auth.signUp(
+      email: email,
+      password: password,
+    );
+    final String? userId = response.user?.id;
+    if (userId != null) {
+      await _supabase
+          .from('profiles')
+          .update({
+            'user_name': username.trim(),
+            'birthday': birthday.toIso8601String(),
+            'location': location,
+          })
+          .eq('id', userId);
     }
+
+    // return userId;
   }
 
   Future<void> signIn(String email, String password) async {
