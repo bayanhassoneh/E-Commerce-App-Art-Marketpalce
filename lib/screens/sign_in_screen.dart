@@ -51,18 +51,21 @@ class _SignInScreenState extends State<SignInScreen> {
             // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               Container(height: 100),
-              Text(
-                'log into PaintPay',
-                style: TextStyle(
-                  foreground: Paint()
-                    ..shader = LinearGradient(
-                      colors: <Color>[
-                        const Color.fromARGB(255, 2, 2, 255),
-                        const Color.fromARGB(255, 179, 132, 233),
-                      ],
-                    ).createShader(Rect.fromLTWH(0.0, 0.0, 200.0, 70.0)),
-                  fontWeight: FontWeight.bold,
-                  fontSize: 20,
+              Align(
+                alignment: AlignmentDirectional.topCenter,
+                child: Text(
+                  'log into PaintPay',
+                  style: TextStyle(
+                    foreground: Paint()
+                      ..shader = LinearGradient(
+                        colors: <Color>[
+                          const Color.fromARGB(255, 2, 2, 255),
+                          const Color.fromARGB(255, 179, 132, 233),
+                        ],
+                      ).createShader(Rect.fromLTWH(0.0, 0.0, 200.0, 70.0)),
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20,
+                  ),
                 ),
               ),
               const SizedBox(height: 20),

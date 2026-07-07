@@ -26,6 +26,13 @@ the Marketplace is designed to bridge the gap between local artists and art enth
     <img src="screenshots/test1.png" width="30%" />
 </p>
 
+## ERD
+![ERD](docs/ERD.png)
+
+For the full-resolution diagram:
+
+[📄 ERD PDF](docs/ERD.pdf)
+
 ## 👷 Technical Highlights
 As an aspiring Software Engineer, I focused on:
 * Implementing **Clean Code** principles and reusable UI components.

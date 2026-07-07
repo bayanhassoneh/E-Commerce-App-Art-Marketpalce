@@ -6,7 +6,7 @@ begin
     new.following_id,
     new.follower_id,  
     'follow', 
-    'started following you!'
+    'follow request',
   );
   return new;
 end;

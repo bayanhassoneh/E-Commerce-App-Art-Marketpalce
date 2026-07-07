@@ -16,4 +16,15 @@ class Artwork {
     required this.imageUrl,
     required this.createdAt,
   });
+  factory Artwork.fromMap(Map<String, dynamic> map) {
+    return Artwork(
+      id: map['id'] ?? '',
+      artistId: map['artist_id'] ?? '',
+      title: map['title'] ?? ' ',
+      price: (map['price'] as num?)?.toDouble() ?? 0.0,
+      description: map['description'] ?? ' ',
+      imageUrl: map['image_url'] ?? '',
+      createdAt: map['created_at'] ?? '',
+    );
+  }
 }

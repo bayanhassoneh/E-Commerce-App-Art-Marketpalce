@@ -8,6 +8,9 @@ user_name text unique,
 cover_url text,
 location text, 
 bio text,
+followers integer default 0,
+following integer default 0,
+--add
 joined_date timestamp with time zone default timezone('utc'::text, now()) not null
 );
 --
@@ -94,16 +97,16 @@ is_read boolean default false,
 );
 --
 -- notifications table
-create table if not exists public.notifications (
-  id uuid default gen_random_uuid() primary key,
-  receiver_id uuid references public.profiles(id) on delete cascade, 
-  sender_id uuid references public.profiles(id)on delete cascade, 
-  type text,
-  content text not null, 
-  is_read boolean default false,
-  created_at timestamp with time zone DEFAULT timezone('utc'::text, now()) not null
-);
---
+-- create table if not exists public.notifications (
+--   id uuid default gen_random_uuid() primary key,
+--   receiver_id uuid references public.profiles(id) on delete cascade, 
+--   sender_id uuid references public.profiles(id)on delete cascade, 
+--   type text,
+--   content text not null, 
+--   is_read boolean default false,
+--   created_at timestamp with time zone DEFAULT timezone('utc'::text, now()) not null
+-- );
+-- --
 -- rates table
 create table public.rates(
   id uuid default gen_random_uuid() primary key,

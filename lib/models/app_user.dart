@@ -5,6 +5,8 @@ class AppUser {
   final String profilePicture;
   final String location;
   final String joinedDate;
+  final int followers;
+  final int following;
   AppUser({
     required this.id,
     required this.username,
@@ -12,6 +14,8 @@ class AppUser {
     required this.profilePicture,
     required this.location,
     required this.joinedDate,
+    required this.followers,
+    required this.following,
   });
 
   //turning database's map into class's object by using factory
@@ -23,6 +27,8 @@ class AppUser {
       profilePicture: map['profile_picture'] ?? '',
       location: map['location'] ?? '',
       joinedDate: map['joined_date'] ?? '',
+      followers: map['followers'] ?? '',
+      following: map['following'] ?? '',
     );
   }
 }
