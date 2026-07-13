@@ -76,18 +76,26 @@ class AuthService {
       email: email,
       password: password,
     );
-    final String? userId = response.user?.id;
-    if (userId != null) {
-      await _supabase
-          .from('profiles')
-          .update({
-            'user_name': username.trim(),
-            'birthday': birthday.toIso8601String(),
-            'location': location,
-          })
-          .eq('id', userId);
-    }
+    print(response.user);
+    print(response.session);
 
+    if (response.user == null) {
+      throw Exception("User creation failed.");
+    } else {
+      final String? userId = response.user?.id;
+      print("User ID = $userId");
+      if (userId != null) {
+        await _supabase
+            .from('profiles')
+            .update({
+              'user_name': username.trim(),
+              'birthday': birthday.toIso8601String(),
+              'location': location,
+            })
+            .eq('id', userId);
+      }
+      print("User profile updated successfully.");
+    }
     // return userId;
   }
 

@@ -53,20 +53,44 @@ class _SignInScreenState extends State<SignInScreen> {
               Container(height: 100),
               Align(
                 alignment: AlignmentDirectional.topCenter,
-                child: Text(
-                  'log into PaintPay',
-                  style: TextStyle(
-                    foreground: Paint()
-                      ..shader = LinearGradient(
-                        colors: <Color>[
-                          const Color.fromARGB(255, 2, 2, 255),
-                          const Color.fromARGB(255, 179, 132, 233),
-                        ],
-                      ).createShader(Rect.fromLTWH(0.0, 0.0, 200.0, 70.0)),
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20,
+                child: ShaderMask(
+                  shaderCallback: (bounds) {
+                    return const LinearGradient(
+                      colors: <Color>[
+                        Color.fromARGB(255, 2, 2, 255), // الأزرق القوي
+                        Color.fromARGB(255, 179, 132, 233), // البنفسجي
+                      ],
+                      begin: Alignment.centerLeft, // بيبدأ الأزرق من اليسار
+                      end: Alignment.centerRight, // بينتهي البنفسجي على اليمين
+                    ).createShader(
+                      Rect.fromLTWH(0, 0, bounds.width, bounds.height),
+                    );
+                    // السطر اللي فوق بضمن إنه الـ 0 و 0 هي أول النص، والجرادينت بيمشي على قد عرض النص بالظبط
+                  },
+                  child: const Text(
+                    'log into PaintPay',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20,
+                      color: Colors
+                          .white, // ضروري يكون أبيض عشان الشيدر يطبع الألوان عليه صح
+                    ),
                   ),
                 ),
+                // Text(
+                //   'log into PaintPay',
+                //   style: TextStyle(
+                //     foreground: Paint()
+                //       ..shader = LinearGradient(
+                //         colors: <Color>[
+                //           const Color.fromARGB(255, 2, 2, 255),
+                //           const Color.fromARGB(255, 179, 132, 233),
+                //         ],
+                //       ).createShader(Rect.fromLTWH(0.0, 0.0, 200.0, 70.0)),
+                //     fontWeight: FontWeight.bold,
+                //     fontSize: 20,
+                //   ),
+                // ),
               ),
               const SizedBox(height: 20),
               CustomTextFeild(

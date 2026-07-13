@@ -299,8 +299,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   if (value.length > 20) {
                     return "Username is too long";
                   }
-                  if (!RegExp(r'^[a-zA-Z0-9_]+$').hasMatch(value)) {
-                    return "Only letters, numbers and _ allowed";
+                  if (!RegExp(r'^[a-zA-Z0-9_\.]+$').hasMatch(value)) {
+                    return "Only letters, numbersو, . , and _ allowed";
                   }
                   return null;
                 },

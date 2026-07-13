@@ -45,26 +45,27 @@ class _ProfileScreenState extends State<ProfileScreen> {
     final authProvider = context.read<AuthProvider>();
     final String? currentUserId = authProvider.currentUserId;
     final bool isMyProfile = currentUserId == widget.profileUserId;
+    return FutureBuilder<AppUser>(
+      future: _fetchUserProfile(),
 
-    return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(44.0), // الارتفاع القياسي لآيفون
-        child: CupertinoNavigationBar(leading: Text('profile')),
-      ),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: CircularProgressIndicator());
+        }
+        if (snapshot.hasError) {
+          return Center(child: Text('an error occurred: ${snapshot.error}'));
+        }
+        final user = snapshot.data!;
 
-      body: FutureBuilder<AppUser>(
-        future: _fetchUserProfile(),
+        return Scaffold(
+          appBar: PreferredSize(
+            preferredSize: const Size.fromHeight(
+              44.0,
+            ), // الارتفاع القياسي لآيفون
+            child: CupertinoNavigationBar(leading: Text(user.username)),
+          ),
 
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          }
-          if (snapshot.hasError) {
-            return Center(child: Text('an error occurred: ${snapshot.error}'));
-          }
-          final user = snapshot.data!;
-
-          return SingleChildScrollView(
+          body: SingleChildScrollView(
             child: Column(
               children: [
                 Row(
@@ -107,11 +108,64 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 SizedBox(height: 10),
                 const Divider(height: 40, thickness: 1),
                 SizedBox(height: 10),
+
+                FutureBuilder<List<Artwork>>(
+                  future: _fetchUserArtworks(),
+                  builder: (context, artworkSnapshot) {
+                    if (artworkSnapshot.connectionState ==
+                        ConnectionState.waiting) {
+                      return const Center(child: CircularProgressIndicator());
+                    }
+                    if (!artworkSnapshot.hasData ||
+                        artworkSnapshot.data!.isEmpty) {
+                      return const Center(child: Text("No artworks posted."));
+                    }
+
+                    final artworks = artworkSnapshot.data!;
+
+                    return GridView.builder(
+                      shrinkWrap: true,
+                      physics:
+                          const NeverScrollableScrollPhysics(), // لمنع تعارض السكرول
+                      itemCount: artworks.length,
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 3, //عدد الشبكه
+                            childAspectRatio: 0.8,
+                          ),
+                      itemBuilder: (context, index) {
+                        final artwork = artworks[index];
+                        return Card(
+                          child: Column(
+                            children: [
+                              // فرضاً عندك رابط الصورة في المودل
+                              Expanded(
+                                child: Container(
+                                  color: Colors.grey[300],
+                                  child: const Icon(Icons.image),
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(
+                                  artwork.title,
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        );
+                      },
+                    );
+                  },
+                ),
               ],
             ),
-          );
-        },
-      ),
+          ),
+        );
+      },
     );
   }
 }

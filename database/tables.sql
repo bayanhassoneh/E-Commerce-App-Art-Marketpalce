@@ -35,6 +35,14 @@ artworks_id uuid references public.artworks(id) on delete cascade,
 created_at timestamp with time zone default timezone('utc'::text, now()),
 unique(user_id, artworks_id)
 );
+
+ALTER TABLE public.likes
+ADD CONSTRAINT fk_likes_profile 
+FOREIGN KEY (user_id) REFERENCES public.profiles(id) ON DELETE CASCADE;
+
+ALTER TABLE public.likes
+ADD CONSTRAINT fk_likes_artwork 
+FOREIGN KEY (artworks_id) REFERENCES public.artworks(id) ON DELETE CASCADE;
 --
 -- orders table
 create table orders (
@@ -44,6 +52,9 @@ create table orders (
   status text default 'pinding',
   created_at timestamp with time zone default now()
 );
+ALTER TABLE public.orders
+ADD CONSTRAINT fk_orders_profile 
+FOREIGN KEY (user_id) REFERENCES public.profiles(id) ON DELETE CASCADE;
 --
 -- order_items table
 create table order_items (
@@ -56,12 +67,15 @@ UNIQUE(artworks_id)
 --
 -- cart_items table
 create table cart_items  (
-  user_id uuid references auth.users(id) on delete cascade default auth.uid(),
-  artworks_id uuid references artworks(id) on delete cascade,
+  user_id uuid references public.profiles(id) on delete cascade default auth.uid(),
+  artworks_id uuid references public.artworks(id) on delete cascade,
   id uuid default gen_random_uuid() primary key,
   created_at timestamp with time zone default now(),
   unique(user_id, artworks_id)
 );
+ALTER TABLE public.cart_items
+ADD CONSTRAINT fk_cart_items_profile 
+FOREIGN KEY (user_id) REFERENCES public.profiles(id) ON DELETE CASCADE;
 --
 -- payments table
 create table payments (
@@ -75,6 +89,9 @@ payment_method text,
 transaction_id text unique,
 created_at timestamp with time zone DEFAULT timezone('utc'::text, now()) not null
 );
+ALTER TABLE public.payments
+ADD CONSTRAINT fk_payments_profile 
+FOREIGN KEY (user_id) REFERENCES public.profiles(id);
 --
 -- conversations table
 create table conversations(
@@ -85,7 +102,18 @@ last_messsage text,
 last_messag_time timestamp with time zone default timezone('utc'::text, now()) not null,
 unique(user1_id, user2_id)
 );
+-- 1. ربط العمود الأول في جدول المحادثات بجدول البروفايل
+ALTER TABLE public.conversations
+ADD CONSTRAINT fk_conversations_user1 
+FOREIGN KEY (user1_id) REFERENCES public.profiles(id) ON DELETE CASCADE;
+
+-- 2. ربط العمود الثاني في جدول المحادثات بجدول البروفايل
+ALTER TABLE public.conversations
+ADD CONSTRAINT fk_conversations_user2 
+FOREIGN KEY (user2_id) REFERENCES public.profiles(id) ON DELETE CASCADE;
 --
+
+
 -- messages table
 create table messages(
   id uuid default gen_random_uuid() primary key,
@@ -95,6 +123,10 @@ create table messages(
 is_read boolean default false,
   created_at timestamp with time zone default timezone('utc'::text, now())not null
 );
+-- إضافة قيد الربط لعمود المرسل بشكل صريح لتظهر الخطوط في الرسمة
+ALTER TABLE public.messages
+ADD CONSTRAINT fk_messages_sender_profile 
+FOREIGN KEY (sender_id) REFERENCES public.profiles(id) ON DELETE CASCADE;
 --
 -- notifications table
 -- create table if not exists public.notifications (
@@ -105,7 +137,7 @@ is_read boolean default false,
 --   content text not null, 
 --   is_read boolean default false,
 --   created_at timestamp with time zone DEFAULT timezone('utc'::text, now()) not null
--- );
+-- ); 
 -- --
 -- rates table
 create table public.rates(
@@ -116,6 +148,9 @@ stars integer check (stars >= 1 and stars <= 5),
 created_at timestamp with time zone default timezone('utc'::text, now()),
 unique(user_id, artworks_id)
 );
+ALTER TABLE public.rates
+ADD CONSTRAINT fk_rates_profile 
+FOREIGN KEY (user_id) REFERENCES public.profiles(id) ON DELETE CASCADE;
 --
 -- follows table
 create table follows (
@@ -126,6 +161,13 @@ create table follows (
   unique(follower_id, following_id),
   check (follower_id <> following_id)
 );
+ALTER TABLE public.follows
+ADD CONSTRAINT fk_follows_follower_profile 
+FOREIGN KEY (follower_id) REFERENCES public.profiles(id) ON DELETE CASCADE;
+
+ALTER TABLE public.follows
+ADD CONSTRAINT fk_follows_following_profile 
+FOREIGN KEY (following_id) REFERENCES public.profiles(id) ON DELETE CASCADE;
 --
 -- notifications table
 create table if not exists public.notifications (
@@ -137,6 +179,14 @@ create table if not exists public.notifications (
   is_read boolean default false,
   created_at timestamp with time zone DEFAULT timezone('utc'::text, now()) not null
 );
+ALTER TABLE public.notifications
+ADD CONSTRAINT fk_notifications_receiver_profile 
+FOREIGN KEY (receiver_id) REFERENCES public.profiles(id) ON DELETE CASCADE;
+
+ALTER TABLE public.notifications
+ADD CONSTRAINT fk_notifications_sender_profile 
+FOREIGN KEY (sender_id) REFERENCES public.profiles(id) ON DELETE CASCADE;
+
 --
 -- price_logs table
 create table public.price_logs (

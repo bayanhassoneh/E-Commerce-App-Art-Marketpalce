@@ -44,8 +44,9 @@ class AuthProvider extends ChangeNotifier {
 
     try {
       await _authService.googleSignIn();
-    } catch (e) {
-      print(e);
+    } catch (e, stackTrace) {
+      debugPrint(e.toString());
+      debugPrintStack(stackTrace: stackTrace);
     }
 
     _isLoading = false;
@@ -116,7 +117,9 @@ class AuthProvider extends ChangeNotifier {
         location: location,
       );
       return true;
-    } catch (e) {
+    } catch (e, stackTrace) {
+      debugPrint(e.toString());
+      debugPrintStack(stackTrace: stackTrace);
       rethrow;
     } finally {
       _isLoading = false;
