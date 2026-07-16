@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 ////for DebugDefaultTargetPlatformOverride,could use for compute function(processing heavy stuff)
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'auth_wrapper.dart';
+import 'InternetCheckerWrapper.dart';
 import 'package:art_marketplace/screens/sign_in_screen.dart';
 import 'package:art_marketplace/screens/home_screen.dart';
 import 'package:art_marketplace/screens/sign_up_screen.dart';
@@ -72,6 +73,9 @@ class MyApp extends StatelessWidget {
 
       debugShowCheckedModeBanner: false,
       title: 'PayPaint ',
+      builder: (context, child) {
+        return InternetCheckerWrapper(child: child!);
+      },
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
           seedColor: const Color.fromARGB(255, 255, 255, 255),

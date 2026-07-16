@@ -94,18 +94,18 @@ class AuthProvider extends ChangeNotifier {
     required String password,
     required String username,
   }) async {
-    if (_selectedMonth == null ||
-        _selectedDay == null ||
-        _selectedYear == null) {
-      throw Exception("Please select your complete birthday.");
-    }
-    if (_selectedLocation == null) {
-      throw Exception("Please select your location.");
-    }
     _isLoading = true;
     notifyListeners();
 
     try {
+      if (_selectedMonth == null ||
+          _selectedDay == null ||
+          _selectedYear == null) {
+        throw Exception("Please select your complete birthday.");
+      }
+      if (_selectedLocation == null) {
+        throw Exception("Please select your location.");
+      }
       int monthNumber = monthsList.indexOf(_selectedMonth!) + 1;
       DateTime birthday = DateTime(_selectedYear!, monthNumber, _selectedDay!);
       String location = _selectedLocation!;

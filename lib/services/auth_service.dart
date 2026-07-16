@@ -1,6 +1,8 @@
 import 'dart:async';
+import 'dart:io';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 
 class AuthService {
   final SupabaseClient _supabase = Supabase.instance.client;
@@ -72,16 +74,26 @@ class AuthService {
     required DateTime birthday,
     required String location,
   }) async {
-    final AuthResponse response = await _supabase.auth.signUp(
-      email: email,
-      password: password,
-    );
-    print(response.user);
-    print(response.session);
+    var connectivityResult = await (Connectivity().checkConnectivity());
+    if (connectivityResult == ConnectivityResult.none) {
+      throw const SocketException(
+        "لا يوجد اتصال بالإنترنت، يرجى التحقق من الشبكة.",
+      );
+    }
 
-    if (response.user == null) {
-      throw Exception("User creation failed.");
-    } else {
+    try {
+      final AuthResponse response = await _supabase.auth.signUp(
+        email: email,
+        password: password,
+      );
+
+      print("User Created: ${response.user}");
+      print("Session: ${response.session}");
+
+      if (response.user == null) {
+        throw Exception("User creation failed.");
+      }
+
       final String? userId = response.user?.id;
       print("User ID = $userId");
       if (userId != null) {
@@ -93,10 +105,27 @@ class AuthService {
               'location': location,
             })
             .eq('id', userId);
+
+        print("User profile updated successfully.");
       }
-      print("User profile updated successfully.");
+    } on AuthException catch (error) {
+      if (error.message.contains('already exists') ||
+          error.statusCode == '422') {
+        throw Exception(
+          "This account is already registered. Please try signing in with Google.",
+        );
+      } else {
+        throw Exception(error.message);
+      }
+    } on SocketException catch (_) {
+      throw const SocketException(
+        " No internet connection. Please check your network.",
+      );
+    } catch (error) {
+      // 6. أي خطأ آخر غير متوقع (مثل أخطاء الداتابيز)
+      print("General Error: $error");
+      throw Exception("An unexpected error occurred: $error");
     }
-    // return userId;
   }
 
   Future<void> signIn(String email, String password) async {
