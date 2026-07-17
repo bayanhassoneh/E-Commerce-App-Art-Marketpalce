@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:art_marketplace/services/auth_service.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -109,14 +111,23 @@ class AuthProvider extends ChangeNotifier {
       int monthNumber = monthsList.indexOf(_selectedMonth!) + 1;
       DateTime birthday = DateTime(_selectedYear!, monthNumber, _selectedDay!);
       String location = _selectedLocation!;
-      await _authService.signUp(
-        email: email,
-        password: password,
-        username: username,
-        birthday: birthday,
-        location: location,
-      );
+      await _authService
+          .signUp(
+            email: email,
+            password: password,
+            username: username,
+            birthday: birthday,
+            location: location,
+          )
+          .timeout(
+            const Duration(seconds: 15),
+            onTimeout: () {
+              throw TimeoutException("Sign up timed out. Please try again.");
+            },
+          );
       return true;
+    } on TimeoutException catch (e) {
+      throw ("No internet connection. Please check your network.",);
     } catch (e, stackTrace) {
       debugPrint(e.toString());
       debugPrintStack(stackTrace: stackTrace);

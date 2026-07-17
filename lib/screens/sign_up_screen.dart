@@ -4,6 +4,7 @@ import 'package:art_marketplace/providers/auth_provider.dart';
 import 'package:provider/provider.dart';
 import '../widgets/custom_text_field.dart';
 import '../widgets/custom_button.dart';
+import '../widgets/custom_dropdownbuttom.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -155,118 +156,36 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     children: [
                       // Month Dropdown
                       Expanded(
-                        child: DropdownButtonFormField<String>(
-                          isExpanded: true,
-
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(),
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(15),
-                              borderSide: BorderSide(color: Colors.grey),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10),
-                              borderSide: BorderSide(
-                                color: const Color.fromARGB(255, 85, 39, 158),
-                              ),
-                            ),
-                            contentPadding: EdgeInsets.symmetric(
-                              horizontal: 8,
-                              vertical: 8,
-                            ),
-                          ),
-                          hint: Text(
-                            "Month",
-                            style: TextStyle(color: Colors.grey),
-                          ),
-                          items: monthsList
-                              .map(
-                                (m) =>
-                                    DropdownMenuItem(value: m, child: Text(m)),
-                              )
-                              .toList(),
+                        child: CustomDropdownbuttom(
+                          hint: 'month',
+                          list: monthsList,
                           onChanged: (val) {
                             context.read<AuthProvider>().updateMonth(val);
                           },
                         ),
                       ),
+
                       SizedBox(width: 10),
-                      // Day Dropdown
+                      //day Dropdown
                       Expanded(
-                        child: DropdownButtonFormField<int>(
-                          isExpanded: true,
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(),
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(15),
-                              borderSide: BorderSide(color: Colors.grey),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10),
-                              borderSide: BorderSide(
-                                color: const Color.fromARGB(255, 85, 39, 158),
-                              ),
-                            ),
-                            contentPadding: EdgeInsets.symmetric(
-                              horizontal: 8,
-                              vertical: 8,
-                            ),
-                          ),
-                          hint: Text(
-                            "Day",
-                            style: TextStyle(color: Colors.grey),
-                          ),
-                          items: List.generate(31, (index) => index + 1)
-                              .map(
-                                (d) => DropdownMenuItem(
-                                  value: d,
-                                  child: Text(d.toString()),
-                                ),
-                              )
-                              .toList(),
+                        child: CustomDropdownbuttom(
+                          hint: "day",
+                          list: List.generate(31, (index) => index + 1),
                           onChanged: (val) {
                             context.read<AuthProvider>().updateDay(val);
                           },
                         ),
                       ),
+
                       SizedBox(width: 10),
                       // Year Dropdown
                       Expanded(
-                        child: DropdownButtonFormField<int>(
-                          isExpanded: true,
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(),
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(15),
-                              borderSide: BorderSide(color: Colors.grey),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10),
-                              borderSide: BorderSide(
-                                color: const Color.fromARGB(255, 85, 39, 158),
-                              ),
-                            ),
-                            contentPadding: EdgeInsets.symmetric(
-                              horizontal: 8,
-                              vertical: 8,
-                            ),
+                        child: CustomDropdownbuttom(
+                          hint: 'year',
+                          list: List.generate(
+                            100,
+                            (index) => DateTime.now().year - index,
                           ),
-                          hint: Text(
-                            "Year",
-                            style: TextStyle(color: Colors.grey),
-                          ),
-                          items:
-                              List.generate(
-                                    100,
-                                    (index) => DateTime.now().year - index,
-                                  )
-                                  .map(
-                                    (y) => DropdownMenuItem(
-                                      value: y,
-                                      child: Text(y.toString()),
-                                    ),
-                                  )
-                                  .toList(),
                           onChanged: (val) {
                             context.read<AuthProvider>().updateYear(val);
                           },
@@ -316,36 +235,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
               SizedBox(height: 10),
               Consumer<AuthProvider>(
                 builder: (context, auth, child) {
+                  //location dropdown
                   return Expanded(
-                    child: DropdownButtonFormField<String>(
-                      isExpanded: true,
-
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(15),
-                          borderSide: BorderSide(color: Colors.grey),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide: BorderSide(
-                            color: const Color.fromARGB(255, 85, 39, 158),
-                          ),
-                        ),
-                        contentPadding: EdgeInsets.symmetric(
-                          horizontal: 8,
-                          vertical: 8,
-                        ),
-                      ),
-                      hint: Text(
-                        "location",
-                        style: TextStyle(color: Colors.grey),
-                      ),
-                      items: locationsList
-                          .map(
-                            (l) => DropdownMenuItem(value: l, child: Text(l)),
-                          )
-                          .toList(),
+                    child: CustomDropdownbuttom(
+                      hint: "location",
+                      list: locationsList,
                       onChanged: (val) {
                         context.read<AuthProvider>().updateLocation(val);
                       },
@@ -353,7 +247,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   );
                 },
               ),
-              //generate a list of 100 locations
               SizedBox(height: 20),
               Consumer<AuthProvider>(
                 builder: (context, auth, child) {

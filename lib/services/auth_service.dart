@@ -77,7 +77,7 @@ class AuthService {
     var connectivityResult = await (Connectivity().checkConnectivity());
     if (connectivityResult == ConnectivityResult.none) {
       throw const SocketException(
-        "لا يوجد اتصال بالإنترنت، يرجى التحقق من الشبكة.",
+        "No internet connection. Please check your network.",
       );
     }
 

@@ -67,6 +67,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
           body: SingleChildScrollView(
             child: Column(
+              // crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Row(
                   children: [
@@ -108,7 +109,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 SizedBox(height: 10),
                 const Divider(height: 40, thickness: 1),
                 SizedBox(height: 10),
+                OutlinedButton(
+                  style: OutlinedButton.styleFrom(
+                    side: const BorderSide(color: Colors.black, width: 1),
+                  ),
+                  onPressed: () {
+                    // backe later
+                  },
 
+                  child: Icon(Icons.add, size: 30, color: Colors.black),
+                ),
                 FutureBuilder<List<Artwork>>(
                   future: _fetchUserArtworks(),
                   builder: (context, artworkSnapshot) {

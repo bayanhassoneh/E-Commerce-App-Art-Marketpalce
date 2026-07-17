@@ -32,6 +32,7 @@ class _SignInScreenState extends State<SignInScreen> {
     //final auth = Provider.of<AuthProvider>(context, listen: false);
     return Scaffold(
       resizeToAvoidBottomInset: false,
+      //do not resize the screen when the keyboard appears
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(44.0), // الارتفاع القياسي لآيفون
         child: CupertinoNavigationBar(
