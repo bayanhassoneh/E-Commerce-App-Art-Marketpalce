@@ -5,6 +5,8 @@ import 'package:provider/provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:art_marketplace/models/app_user.dart';
 import 'package:art_marketplace/models/artworks.dart';
+import 'package:art_marketplace/providers/post_provider.dart';
+import 'package:art_marketplace/screens/create_post_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
   final String profileUserId;
@@ -109,16 +111,35 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 SizedBox(height: 10),
                 const Divider(height: 40, thickness: 1),
                 SizedBox(height: 10),
+
                 OutlinedButton(
                   style: OutlinedButton.styleFrom(
                     side: const BorderSide(color: Colors.black, width: 1),
                   ),
-                  onPressed: () {
-                    // backe later
+                  onPressed: () async {
+                    final provider = context.read<PostProvider>();
+                    await provider.pickImage();
+                    if (provider.selectedImage != null) {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => const CreatePostScreen(),
+                        ),
+                      );
+                    }
                   },
-
-                  child: Icon(Icons.add, size: 30, color: Colors.black),
+                  child: Row(
+                    children: [
+                      Icon(Icons.add, size: 30, color: Colors.black),
+                      SizedBox(width: 8),
+                      Text(
+                        "Add Artwork",
+                        style: TextStyle(fontSize: 16, color: Colors.black),
+                      ),
+                    ],
+                  ),
                 ),
+
                 FutureBuilder<List<Artwork>>(
                   future: _fetchUserArtworks(),
                   builder: (context, artworkSnapshot) {

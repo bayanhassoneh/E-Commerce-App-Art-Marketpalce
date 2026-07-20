@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:art_marketplace/services/auth_service.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
