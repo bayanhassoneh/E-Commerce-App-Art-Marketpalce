@@ -41,4 +41,33 @@ As an aspiring Software Engineer, I focused on:
 * * Developed custom **SQL Functions and Triggers** to automate complex data workflows and maintain integrity.
 * Managing complex backend logic directly in the database to ensure data integrity.
 
+
+## 📂 Folder Structure
+
+```text
+art_marketplace/
+├── lib/
+│   ├── core/
+│   ├── modles/
+│   ├── providers/
+│   ├── screens/
+│   ├── services/
+│   ├── widgets/
+│   └── main.dart
+├── assets/
+├── database/
+│   ├── triggers/
+│   ├── indexes,sql
+│   ├── security.sql
+│   └── tables.sql
+│
+├── screenshots/
+├── docs/
+│   ├── ERD.pdf
+│   └── ERD.png
+├── test/
+├── pubspec.yaml
+└── README.md
+
+```
   --

@@ -1,4 +1,4 @@
-class Artwork {
+class Post {
   final String id;
   final String artistId;
   final String title;
@@ -7,7 +7,7 @@ class Artwork {
   final String imageUrl;
   final String createdAt;
 
-  Artwork({
+  Post({
     required this.id,
     required this.artistId,
     required this.title,
@@ -16,8 +16,8 @@ class Artwork {
     required this.imageUrl,
     required this.createdAt,
   });
-  factory Artwork.fromMap(Map<String, dynamic> map) {
-    return Artwork(
+  factory Post.fromMap(Map<String, dynamic> map) {
+    return Post(
       id: map['id'] ?? '',
       artistId: map['artist_id'] ?? '',
       title: map['title'] ?? ' ',

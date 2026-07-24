@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:art_marketplace/providers/profile_provider.dart';
 import 'package:provider/provider.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:art_marketplace/models/artworks.dart';
+import 'package:art_marketplace/providers/post_provider.dart';
 
 class CreatePostScreen extends StatefulWidget {
   const CreatePostScreen({super.key});
@@ -13,6 +11,18 @@ class CreatePostScreen extends StatefulWidget {
 }
 
 class _CreatePostScreenState extends State<CreatePostScreen> {
+  GlobalKey<FormState> _formkey = GlobalKey<FormState>();
+  final TextEditingController _descriptionController = TextEditingController();
+  final TextEditingController _titlecontroller = TextEditingController();
+  final TextEditingController _pricecontroller = TextEditingController();
+  @override
+  void dispose() {
+    _descriptionController.dispose();
+    _titlecontroller.dispose();
+    _pricecontroller.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,14 +36,132 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
         ),
       ),
       body: SingleChildScrollView(
-        child: Column(
-          // crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            //chosen image
+        child: Form(
+          key: _formkey,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              //chosen image
+              Consumer<PostProvider>(
+                builder: (context, provider, child) {
+                  if (provider.selectedImage == null) {
+                    return const SizedBox();
+                  }
 
-            //description
-            //post botton
-          ],
+                  return Image.file(provider.selectedImage!);
+                },
+              ),
+              //title
+              TextFormField(
+                controller: _titlecontroller,
+                minLines: 1,
+                maxLines: 2,
+                decoration: InputDecoration(
+                  labelText: 'add a Title',
+                  labelStyle: TextStyle(color: Colors.grey),
+                  border: OutlineInputBorder(),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(5),
+                    borderSide: BorderSide(color: Colors.grey),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                      color: const Color.fromARGB(255, 217, 237, 118),
+                    ),
+                    // borderRadius: BorderRadius.circular(15),
+                  ),
+                ),
+              ),
+              //price
+              TextFormField(
+                controller: _pricecontroller,
+                keyboardType: TextInputType.number,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter a price';
+                  }
+                  if (double.tryParse(value) == null) {
+                    return 'Please enter a valid number';
+                  }
+                  return null;
+                },
+                decoration: InputDecoration(
+                  labelText: 'add a Price',
+                  labelStyle: TextStyle(color: Colors.grey),
+                  border: OutlineInputBorder(),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(5),
+                    borderSide: BorderSide(color: Colors.grey),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                      color: const Color.fromARGB(255, 217, 237, 118),
+                    ),
+                    // borderRadius: BorderRadius.circular(15),
+                  ),
+                ),
+              ),
+              //description
+              TextFormField(
+                controller: _descriptionController,
+                minLines: 3,
+                maxLines: null,
+                decoration: InputDecoration(
+                  labelText: 'add a Description',
+                  labelStyle: TextStyle(color: Colors.grey),
+                  border: OutlineInputBorder(),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(5),
+                    borderSide: BorderSide(color: Colors.grey),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                      color: const Color.fromARGB(255, 217, 237, 118),
+                    ),
+                    // borderRadius: BorderRadius.circular(15),
+                  ),
+                ),
+              ),
+
+              //post botton
+              Consumer<PostProvider>(
+                builder: (context, provider, child) {
+                  return OutlinedButton(
+                    style: OutlinedButton.styleFrom(
+                      side: const BorderSide(color: Colors.black, width: 1),
+                    ),
+
+                    onPressed: provider.isLoading
+                        ? null
+                        : () async {
+                            if (!_formkey.currentState!.validate()) {
+                              return;
+                            }
+                            final success = await provider.createPost(
+                              _descriptionController.text,
+                              _titlecontroller.text,
+                              double.parse(_pricecontroller.text),
+                            );
+
+                            if (success && context.mounted) {
+                              Navigator.pop(context);
+                            }
+                          },
+                    child: provider.isLoading
+                        ? const SizedBox(
+                            height: 20,
+                            width: 20,
+                            child: CircularProgressIndicator(strokeWidth: 2),
+                          )
+                        : Text(
+                            "post",
+                            style: TextStyle(fontSize: 16, color: Colors.black),
+                          ),
+                  );
+                },
+              ),
+            ],
+          ),
         ),
       ),
     );

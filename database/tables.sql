@@ -18,7 +18,7 @@ joined_date timestamp with time zone default timezone('utc'::text, now()) not nu
 -- artworks table
 create table public.artworks (
   id uuid default gen_random_uuid() primary key,
-user_id uuid references public.profiles(id) on delete cascade,
+user_id uuid references public.profiles(id) on delete cascade, 
   title text ,
   description text,
   image_url text ,
@@ -49,7 +49,7 @@ create table orders (
   id uuid default gen_random_uuid() primary key,
   user_id uuid references public.profiles(id) on delete cascade default auth.uid(),
   total_price numeric not null,
-  status text default 'pinding',
+  status text default 'pending',
   created_at timestamp with time zone default now()
 );
 ALTER TABLE public.orders
