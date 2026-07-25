@@ -14,6 +14,7 @@ class PostProvider extends ChangeNotifier {
   bool _isLoading = false;
   File? get selectedImage => _selectedImage;
   bool get isLoading => _isLoading;
+
   Future<void> pickImage() async {
     File? imageFile = await _imagePickerService.pickImage();
     if (imageFile != null) {
