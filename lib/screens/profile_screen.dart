@@ -179,18 +179,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 childAspectRatio: 1,
               ),
               itemBuilder: (context, index) {
-                final artwork = provider.artworks[index];
+                final post = provider.artworks[index];
                 return GestureDetector(
                   onTap: () {
-                    Navigator.pushNamed(
-                      context,
-                      '/product',
-                      arguments: artwork,
-                    );
+                    Navigator.pushNamed(context, '/product', arguments: post);
                   },
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(6),
-                    child: Image.network(artwork.imageUrl, fit: BoxFit.cover),
+                    child: Image.network(post.imageUrl, fit: BoxFit.cover),
                   ),
                 );
               },

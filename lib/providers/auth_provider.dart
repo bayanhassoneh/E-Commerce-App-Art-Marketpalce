@@ -125,8 +125,8 @@ class AuthProvider extends ChangeNotifier {
             },
           );
       return true;
-    } on TimeoutException catch (e) {
-      throw ("No internet connection. Please check your network.",);
+    } on TimeoutException {
+      throw Exception("No internet connection. Please check your network.");
     } catch (e, stackTrace) {
       debugPrint(e.toString());
       debugPrintStack(stackTrace: stackTrace);
@@ -158,7 +158,10 @@ class AuthProvider extends ChangeNotifier {
   }
 
   Future<void> signOut() async {
+    _isLoading = true;
+    notifyListeners();
     await _authService.signOut();
+    _isLoading = false;
     notifyListeners();
   }
 

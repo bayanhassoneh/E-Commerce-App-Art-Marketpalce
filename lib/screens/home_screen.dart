@@ -5,6 +5,8 @@ import 'cart_screen.dart';
 import 'package:art_marketplace/screens/profile_screen.dart';
 import 'package:art_marketplace/providers/auth_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:art_marketplace/providers/post_provider.dart';
+import 'package:art_marketplace/widgets/post_card.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key, required this.title});
@@ -17,6 +19,13 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int _currentIndex = 0;
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<PostProvider>().fetchFeedPosts();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,16 +56,24 @@ class _HomePageState extends State<HomePage> {
       body: IndexedStack(
         index: _currentIndex,
         children: [
-          SingleChildScrollView(
-            child: Column(
-              children: [
-                ///back sooooooooooooooooooooooooooooooon
-              ],
-            ),
-          ),
-          const CartScreen(title: 'cart'),
+          Consumer<PostProvider>(
+            builder: (context, provider, child) {
+              if (provider.posts.isEmpty) {
+                return const Center(child: CircularProgressIndicator());
+              }
 
-          // const MessagesScreen(),
+              return ListView.builder(
+                itemCount: provider.posts.length,
+                itemBuilder: (context, index) {
+                  final artwork = provider.posts[index];
+
+                  return PostCard(post: artwork);
+                },
+              );
+            },
+          ),
+
+          const CartScreen(title: 'cart'),
           ProfileScreen(
             title: 'profile',
             profileUserId: context.read<AuthProvider>().currentUserId ?? "",
@@ -78,7 +95,6 @@ class _HomePageState extends State<HomePage> {
             icon: Icon(Icons.shopping_cart),
             label: 'Cart',
           ),
-          BottomNavigationBarItem(icon: Icon(Icons.message), label: 'Messages'),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
         ],
       ),

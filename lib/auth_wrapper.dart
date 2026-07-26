@@ -5,8 +5,6 @@ import 'screens/home_screen.dart';
 import 'screens/sign_in_screen.dart';
 import 'screens/CompleteProfileScreen.dart';
 import 'core/navigation.dart';
-import 'package:provider/provider.dart';
-import 'providers/auth_provider.dart';
 import 'dart:async';
 
 class AuthWrapper extends StatefulWidget {
@@ -17,6 +15,7 @@ class AuthWrapper extends StatefulWidget {
 }
 
 class _AuthWrapperState extends State<AuthWrapper> {
+  final SupabaseClient _supabase = Supabase.instance.client;
   User? _user;
   bool isLoading = true;
   bool? _needsUsername;
@@ -24,7 +23,6 @@ class _AuthWrapperState extends State<AuthWrapper> {
   @override
   void initState() {
     super.initState();
-    context.read<AuthProvider>().init();
     _checkAuth();
   }
 
@@ -36,7 +34,7 @@ class _AuthWrapperState extends State<AuthWrapper> {
 
   Future<void> _checkAuth() async {
     // 1. الفحص الأولي عند فتح التطبيق مباشرة (حالة الكاش)
-    final session = Supabase.instance.client.auth.currentSession;
+    final session = _supabase.auth.currentSession;
     _user = session?.user;
 
     if (_user != null) {
@@ -48,9 +46,7 @@ class _AuthWrapperState extends State<AuthWrapper> {
     }
 
     // 2. الاستماع لأي تغيير في حالة تسجيل الدخول (مثل الضغط على زر جوجل أو تسجيل الخروج)
-    _authSubscription = Supabase.instance.client.auth.onAuthStateChange.listen((
-      data,
-    ) async {
+    _authSubscription = _supabase.auth.onAuthStateChange.listen((data) async {
       if (!mounted) return;
 
       // هندلة استعادة كلمة المرور
@@ -67,11 +63,15 @@ class _AuthWrapperState extends State<AuthWrapper> {
       _user = data.session?.user;
 
       if (_user != null) {
+        setState(() {
+          isLoading = true;
+        });
         // جلب حالة البروفايل بدون تعطيل الـ Stream الرئيسي
         await _fetchProfileStatus(_user!.id);
       } else {
         // في حال تسجيل الخروج، تصفير الحالات فوراً
         setState(() {
+          _user = null;
           _needsUsername = null;
           isLoading = false;
         });
@@ -82,7 +82,7 @@ class _AuthWrapperState extends State<AuthWrapper> {
   // دالة منفصلة ومحمية بالكامل لجلب حالة الـ username
   Future<void> _fetchProfileStatus(String userId) async {
     try {
-      final profile = await Supabase.instance.client
+      final profile = await _supabase
           .from('profiles')
           .select('user_name')
           .eq('id', userId)

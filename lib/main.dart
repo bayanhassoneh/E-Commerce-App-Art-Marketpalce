@@ -17,6 +17,7 @@ import 'package:art_marketplace/providers/auth_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:art_marketplace/screens/Completeprofilescreen.dart';
 import 'core/navigation.dart';
+import 'package:art_marketplace/providers/theme_provider.dart';
 
 // void main() {
 //   debugDefaultTargetPlatformOverride = TargetPlatform.iOS;
@@ -33,12 +34,14 @@ void main() async {
     );
   } catch (e) {
     print("Supabase Initialization Error: $e");
+    return;
   }
 
   runApp(
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => AuthProvider()..init()),
+        ChangeNotifierProvider(create: (_) => ThemeProvider()),
       ],
       child: MyApp(),
     ),
@@ -49,7 +52,22 @@ class MyApp extends StatelessWidget {
   MyApp({super.key});
   @override
   Widget build(BuildContext context) {
+    final themeProvider = context.watch<ThemeProvider>();
     return MaterialApp(
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: const Color.fromARGB(255, 246, 255, 175),
+        ),
+        useMaterial3: true,
+      ),
+      darkTheme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: const Color.fromARGB(255, 173, 169, 229),
+          brightness: Brightness.dark,
+        ),
+        useMaterial3: true,
+      ),
+      themeMode: themeProvider.themeMode,
       navigatorKey: navigatorKey,
       initialRoute: '/',
       routes: {
@@ -76,12 +94,6 @@ class MyApp extends StatelessWidget {
       builder: (context, child) {
         return InternetCheckerWrapper(child: child!);
       },
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color.fromARGB(255, 255, 255, 255),
-        ),
-        useMaterial3: true,
-      ),
     );
   }
 }

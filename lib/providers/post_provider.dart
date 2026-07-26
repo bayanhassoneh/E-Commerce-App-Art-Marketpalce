@@ -5,6 +5,7 @@ import 'package:art_marketplace/services/image_picker_service.dart';
 //import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:art_marketplace/services/storage_service.dart';
 import 'package:art_marketplace/services/post_service.dart';
+import 'package:art_marketplace/models/post.dart';
 
 class PostProvider extends ChangeNotifier {
   final imagePickerService _imagePickerService = imagePickerService();
@@ -14,6 +15,7 @@ class PostProvider extends ChangeNotifier {
   bool _isLoading = false;
   File? get selectedImage => _selectedImage;
   bool get isLoading => _isLoading;
+  List<Post> posts = [];
 
   Future<void> pickImage() async {
     File? imageFile = await _imagePickerService.pickImage();
@@ -43,5 +45,10 @@ class PostProvider extends ChangeNotifier {
     );
 
     return true;
+  }
+
+  Future<void> fetchFeedPosts() async {
+    posts = await _postService.fetchFeedPosts();
+    notifyListeners();
   }
 }
