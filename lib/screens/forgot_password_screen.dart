@@ -39,7 +39,7 @@ class _forgotPasswordScreenState extends State<forgotPasswordScreen> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              Container(height: 50),
+              SizedBox(height: 50),
               // Text(
               //   'find your account',
               //   style: TextStyle(
@@ -51,7 +51,7 @@ class _forgotPasswordScreenState extends State<forgotPasswordScreen> {
               // ),
               SizedBox(height: 20),
               SizedBox(
-                width: MediaQuery.of(context).size.width * 0.8,
+                // width: MediaQuery.of(context).size.width * 0.8,
                 child: Text(
                   'enter your email to find your account.',
                   style: TextStyle(

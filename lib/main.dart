@@ -18,6 +18,9 @@ import 'package:provider/provider.dart';
 import 'package:art_marketplace/screens/Completeprofilescreen.dart';
 import 'core/navigation.dart';
 import 'package:art_marketplace/providers/theme_provider.dart';
+import 'package:art_marketplace/screens/edit_profile_screen.dart';
+import 'package:art_marketplace/providers/post_provider.dart';
+import 'package:art_marketplace/providers/profile_provider.dart';
 
 // void main() {
 //   debugDefaultTargetPlatformOverride = TargetPlatform.iOS;
@@ -42,6 +45,8 @@ void main() async {
       providers: [
         ChangeNotifierProvider(create: (_) => AuthProvider()..init()),
         ChangeNotifierProvider(create: (_) => ThemeProvider()),
+        ChangeNotifierProvider(create: (_) => PostProvider()),
+        ChangeNotifierProvider(create: (_) => ProfileProvider()),
       ],
       child: MyApp(),
     ),
@@ -56,7 +61,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color.fromARGB(255, 246, 255, 175),
+          seedColor: const Color.fromARGB(255, 253, 253, 253),
         ),
         useMaterial3: true,
       ),
@@ -72,21 +77,21 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/': (context) => const AuthWrapper(),
-        '/home': (context) => const HomePage(title: 'home'),
+        '/home': (context) => const HomePage(),
         '/SignIn': (context) => const SignInScreen(),
         '/SignUp': (context) => const SignUpScreen(),
         '/Wrappr': (context) => const AuthWrapper(),
         '/Profile': (context) => ProfileScreen(
-          title: "profile",
           profileUserId: context.read<AuthProvider>().currentUserId ?? "",
         ),
-        '/Cart': (context) => const CartScreen(title: 'cart'),
-        '/Product': (context) => const ProductScreen(title: 'product'),
+        '/Cart': (context) => const CartScreen(),
+        '/Product': (context) => const ProductScreen(),
         '/forgetPassword': (context) =>
             const forgotPasswordScreen(title: "forgot password"),
         '/setpassword': (context) =>
             const SetPasswordScreen(title: "set password"),
         '/CompleteProfile': (context) => const CompleteProfileScreen(),
+        '/EditProfile': (context) => const EditProfileScreen(),
       },
 
       debugShowCheckedModeBanner: false,

@@ -18,8 +18,9 @@ class ProfileService {
     final List<dynamic> data = await _supabase
         .from('artworks')
         .select()
-        .eq('artist_id', profileUserId);
+        .eq('user_id', profileUserId);
     return data.map((item) => Post.fromMap(item)).toList();
   }
+
   //هوم سيرفس
 }

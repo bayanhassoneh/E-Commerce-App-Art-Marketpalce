@@ -22,7 +22,7 @@ class Post {
   factory Post.fromMap(Map<String, dynamic> map) {
     return Post(
       id: map['id'] ?? '',
-      artistId: map['artist_id'] ?? '',
+      artistId: map['user_id'] ?? '',
       title: map['title'] ?? ' ',
       price: (map['price'] as num?)?.toDouble() ?? 0.0,
       description: map['description'] ?? ' ',

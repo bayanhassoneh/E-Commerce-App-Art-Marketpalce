@@ -29,6 +29,7 @@ class _SignInScreenState extends State<SignInScreen> {
 
   @override
   Widget build(BuildContext context) {
+    print("SIGN IN SCREEN BUILD");
     //final auth = Provider.of<AuthProvider>(context, listen: false);
     return Scaffold(
       resizeToAvoidBottomInset: false,

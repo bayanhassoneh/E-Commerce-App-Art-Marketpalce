@@ -26,7 +26,7 @@ class PostService {
     *,
     profiles(
     user_name,
-    profile_picture
+    cover_url
     )
     ''')
         .order('created_at', ascending: false)

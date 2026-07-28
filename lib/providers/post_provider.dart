@@ -48,7 +48,18 @@ class PostProvider extends ChangeNotifier {
   }
 
   Future<void> fetchFeedPosts() async {
-    posts = await _postService.fetchFeedPosts();
-    notifyListeners();
+    Future<void> fetchFeedPosts() async {
+      try {
+        _isLoading = true;
+        notifyListeners();
+
+        posts = await _postService.fetchFeedPosts();
+      } catch (e) {
+        debugPrint(e.toString());
+      } finally {
+        _isLoading = false;
+        notifyListeners();
+      }
+    }
   }
 }

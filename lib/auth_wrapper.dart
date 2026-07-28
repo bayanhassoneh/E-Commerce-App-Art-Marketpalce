@@ -33,13 +33,18 @@ class _AuthWrapperState extends State<AuthWrapper> {
   }
 
   Future<void> _checkAuth() async {
+    print("START CHECK AUTH");
     // 1. الفحص الأولي عند فتح التطبيق مباشرة (حالة الكاش)
     final session = _supabase.auth.currentSession;
+    print("SESSION DONE");
     _user = session?.user;
 
     if (_user != null) {
+      print("BEFORE PROFILE");
       await _fetchProfileStatus(_user!.id);
+      print("AFTER PROFILE");
     } else {
+      print("NO USER");
       setState(() {
         isLoading = false;
       });
@@ -119,7 +124,7 @@ class _AuthWrapperState extends State<AuthWrapper> {
       if (_needsUsername == true) {
         return const CompleteProfileScreen();
       }
-      return const HomePage(title: 'home');
+      return const HomePage();
     } else {
       return const SignInScreen();
     }

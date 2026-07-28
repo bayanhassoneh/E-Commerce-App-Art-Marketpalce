@@ -247,7 +247,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   );
                 },
               ),
-              SizedBox(height: 20),
+              // SizedBox(height: 20),
               Consumer<AuthProvider>(
                 builder: (context, auth, child) {
                   return CustomButton(

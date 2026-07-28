@@ -22,8 +22,9 @@ the Marketplace is designed to bridge the gap between local artists and art enth
 <p align="left">
   <img src="screenshots/signInScreen.png" width="30%" />
     <img src="screenshots/forgetPasswordScreen.png" width="30%" />
-   <img src="screenshots/profileCompleteScreen.png" width="30%" />
-    <img src="screenshots/test1.png" width="30%" />
+   <img src="screenshots/profile.png" width="30%" />
+    <img src="screenshots/home.png" width="30%" />
+    <img src="screenshots/editProfile.png" width="30%" />
 </p>
 
 ## ERD

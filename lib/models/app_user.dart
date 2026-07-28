@@ -3,6 +3,7 @@ class AppUser {
   final String username;
   final String bio;
   final String profilePicture;
+  final String socialLink;
   final String location;
   final String joinedDate;
   final int followers;
@@ -12,6 +13,7 @@ class AppUser {
     required this.username,
     required this.bio,
     required this.profilePicture,
+    required this.socialLink,
     required this.location,
     required this.joinedDate,
     required this.followers,
@@ -24,11 +26,12 @@ class AppUser {
       id: map['id'] ?? '',
       username: map['user_name'] ?? 'undefined user',
       bio: map['bio'] ?? ' ',
-      profilePicture: map['profile_picture'] ?? '',
+      profilePicture: map['cover_url'] ?? '',
+      socialLink: map['social_link'] ?? '',
       location: map['location'] ?? '',
       joinedDate: map['joined_date'] ?? '',
-      followers: map['followers'] ?? '',
-      following: map['following'] ?? '',
+      followers: (map['followers'] as num?)?.toInt() ?? 0,
+      following: (map['following'] as num?)?.toInt() ?? 0,
     );
   }
 }
