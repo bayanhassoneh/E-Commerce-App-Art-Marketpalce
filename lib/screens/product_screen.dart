@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:art_marketplace/models/post.dart';
-
+import 'package:intl/intl.dart';
 class ProductScreen extends StatefulWidget {
   
   const ProductScreen({super.key});
@@ -14,8 +14,9 @@ class _ProductScreenState extends State<ProductScreen> {
   
   @override
   Widget build(BuildContext context) {
- 
+
     final post = ModalRoute.of(context)!.settings.arguments as Post;
+     final date = DateTime.parse(post.createdAt);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
@@ -44,14 +45,20 @@ class _ProductScreenState extends State<ProductScreen> {
                 },
                 child: added? Row(
                   children: [
-                  Text("Added"),
+                  Text("Added",style: TextStyle(color: Colors.green),),
            Icon( 
-          Icons.check, color: Colors.green ), 
+          Icons.check, color: Colors.green,size: 14, ), 
              ],)
-                : Text('Add to cart'),
+                : Text('Add to cart', style: TextStyle(
+                          fontSize: 15,
+                          color: Color.fromARGB(255, 39, 39, 39),
+                        ),),
               ),
               SizedBox(height: 10),
-              Text('by ${post.profile?.username} '),
+              Text('by ${post.profile?.username} ', style: TextStyle(
+                          fontSize: 17,
+                          color: Color.fromARGB(255, 39, 39, 39),
+                        ),),
               SizedBox(height: 10),
 
               Row(
@@ -59,19 +66,20 @@ class _ProductScreenState extends State<ProductScreen> {
                   Text(
                     '${post.price}',
                     style: TextStyle(
-                      fontSize: 12,
+                      fontSize: 18,
                       fontWeight: FontWeight.bold,
                       color: Colors.deepOrange,
                     ),
                   ),
                   SizedBox(width: 7),
-                  Text(post.title),
+                  Text(post.title,  style: TextStyle(
+                      fontSize: 16,fontWeight: FontWeight.bold),),
                 ],
               ),
               SizedBox(height: 10),
               Text(post.description),
               SizedBox(height: 10),
-              Text('${post.createdAt}'),
+              Text(DateFormat('dd MMM yyyy, hh:mm a').format(date)),
             ],
           ),
         ),

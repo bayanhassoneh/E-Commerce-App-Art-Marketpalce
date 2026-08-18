@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:art_marketplace/widgets/seconed_text_field.dart';
 import 'package:art_marketplace/models/app_user.dart';
+import 'package:art_marketplace/providers/profile_provider.dart';
+
+import 'package:provider/provider.dart';
 
 class EditProfileScreen extends StatefulWidget {
   const EditProfileScreen({super.key});
@@ -16,6 +19,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   final TextEditingController _socialLinkeController = TextEditingController();
   final TextEditingController _locationController = TextEditingController();
   final TextEditingController _usernameController = TextEditingController();
+
   @override
   void dispose() {
     _bioController.dispose();
@@ -27,6 +31,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   @override
   Widget build(BuildContext context) {
     final profile = ModalRoute.of(context)!.settings.arguments as AppUser;
+    final profileProvider = context.watch<ProfileProvider>();
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: PreferredSize(
@@ -54,8 +59,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     shaderCallback: (bounds) {
                       return const LinearGradient(
                         colors: <Color>[
-                          Color.fromARGB(255, 102, 108, 211), // الأزرق القوي
-                          Color.fromARGB(255, 137, 132, 143), // البنفسجي
+                          Color.fromARGB(255, 102, 108, 211),
+                          Color.fromARGB(255, 137, 132, 143),
                         ],
                         begin: Alignment.centerLeft, // بيبدأ الأزرق من اليسار
                         end:
@@ -79,13 +84,37 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 SizedBox(height: 20),
                 CircleAvatar(
                   radius: 40,
-                  backgroundImage: profile.profilePicture.isNotEmpty
-                      ? NetworkImage(profile.profilePicture)
+                  backgroundImage:
+                      profileProvider.profile?.profilePicture.isNotEmpty == true
+                      ? NetworkImage(profileProvider.profile!.profilePicture)
                       : const AssetImage('assets/images/default_avatar.png'),
                 ),
-                Text(
-                  'Edit your  picture ',
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+                Align(
+                  alignment: Alignment.center,
+                  child: OutlinedButton(
+                    style: OutlinedButton.styleFrom(
+                      side: const BorderSide(
+                        color: Color.fromARGB(255, 156, 153, 173),
+                        width: 1,
+                      ),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                    ),
+                    onPressed: () async {
+                      await context.read<ProfileProvider>().updateProfileImage(
+                        profile.id,
+                      );
+                    },
+
+                    child: Text(
+                      'change your  picture ',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 15,
+                      ),
+                    ),
+                  ),
                 ),
 
                 const Divider(height: 40, thickness: 1),
@@ -132,6 +161,30 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   controller: _socialLinkeController,
                 ),
                 SizedBox(height: 10),
+
+                Align(
+                  alignment: Alignment.center,
+                  child: OutlinedButton(
+                    style: OutlinedButton.styleFrom(
+                      side: const BorderSide(
+                        color: Color.fromARGB(255, 156, 153, 173),
+                        width: 1,
+                      ),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                    ),
+                    onPressed: () {},
+
+                    child: Text(
+                      'save changes',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 15,
+                      ),
+                    ),
+                  ),
+                ),
               ],
             ),
           ),

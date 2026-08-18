@@ -22,5 +22,15 @@ class ProfileService {
     return data.map((item) => Post.fromMap(item)).toList();
   }
 
+  Future<void> updateProfilePicture({
+    required String profileId,
+    required String imageUrl,
+  }) async {
+    await _supabase
+        .from('profiles')
+        .update({'profilePicture': imageUrl})
+        .eq('id', profileId);
+  }
+
   //هوم سيرفس
 }

@@ -8,6 +8,7 @@ import 'package:art_marketplace/screens/create_post_screen.dart';
 import 'package:art_marketplace/widgets/app_drawer.dart';
 import 'package:art_marketplace/providers/profile_provider.dart';
 import 'package:art_marketplace/widgets/BottomNavigationBar.dart';
+import 'package:intl/intl.dart';
 
 class ProfileScreen extends StatefulWidget {
   final String profileUserId;
@@ -36,7 +37,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     final String? currentUserId = authProvider.currentUserId;
     final bool isMyProfile = currentUserId == widget.profileUserId;
     final profile = provider.profile;
-
+    final date = DateTime.parse(profile!.joinedDate);
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(44.0), // الارتفاع القياسي لآيفون
@@ -71,7 +72,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         ? NetworkImage(profile.profilePicture)
                         : const AssetImage('assets/images/default_avatar.png'),
                   ),
-                  SizedBox(width: 30),
+                  SizedBox(width: 40),
                   Column(
                     children: [
                       Text(
@@ -93,10 +94,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
                 ],
               ),
-              SizedBox(height: 5),
+              const SizedBox(height: 5),
+              Text(profile?.location ?? ''),
+              const SizedBox(height: 1),
               Text(profile?.bio ?? ''),
+              const SizedBox(height: 1),
               Text(profile?.socialLink ?? ''),
-              const SizedBox(height: 15),
+              const SizedBox(height: 1),
+              Text('sence ${DateFormat('MMMM yyyy').format(date)}'),
+              const SizedBox(height: 10),
               isMyProfile
                   ? ElevatedButton(
                       style: ElevatedButton.styleFrom(
@@ -115,7 +121,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       child: const Text(
                         " edite profile",
                         style: TextStyle(
-                          color: Color.fromARGB(255, 31, 31, 31),
+                          fontSize: 14,
+                          color: Color.fromARGB(255, 39, 39, 39),
                         ),
                       ),
                     )
@@ -188,43 +195,47 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               ),
                             ),
                     ),
-              SizedBox(height: 5),
+              SizedBox(height: 1),
               const Divider(height: 40, thickness: 1),
-              SizedBox(height: 5),
+              SizedBox(height: 3),
 
-              OutlinedButton(
-                style: OutlinedButton.styleFrom(
-                  side: const BorderSide(
-                    color: Color.fromARGB(255, 156, 153, 173),
-                    width: 1,
-                  ),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(5),
-                  ),
-                ),
-                onPressed: () async {
-                  final provider = context.read<PostProvider>();
-                  await provider.pickImage();
-                  if (provider.selectedImage != null) {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) => const CreatePostScreen(),
-                      ),
-                    );
-                  }
-                },
-                child: Row(
-                  children: [
-                    Icon(Icons.add, size: 30, color: Colors.black),
-                    SizedBox(width: 8),
-                    Text(
-                      "Add post",
-                      style: TextStyle(fontSize: 16, color: Colors.black),
+              if (isMyProfile)
+                OutlinedButton(
+                  style: OutlinedButton.styleFrom(
+                    side: const BorderSide(
+                      color: Color.fromARGB(255, 156, 153, 173),
+                      width: 1,
                     ),
-                  ],
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                  ),
+                  onPressed: () async {
+                    final provider = context.read<PostProvider>();
+                    await provider.pickImage();
+                    if (provider.selectedImage != null) {
+                      Navigator.pushNamed(context, '/CreatPost');
+                    }
+                  },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.add,
+                        size: 30,
+                        color: Color.fromARGB(255, 39, 39, 39),
+                      ),
+                      SizedBox(width: 8),
+                      Text(
+                        "Add post",
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Color.fromARGB(255, 39, 39, 39),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
 
               GridView.builder(
                 shrinkWrap: true,

@@ -24,7 +24,7 @@ class _InternetCheckerWrapperState extends State<InternetCheckerWrapper> {
         if (connectivityResult != null) {
           if (connectivityResult.contains(ConnectivityResult.none)) {
             if (_DebounceTimer == null || !_DebounceTimer!.isActive) {
-              _DebounceTimer = Timer(const Duration(seconds: 2), () {
+              _DebounceTimer = Timer(const Duration(seconds: 3), () {
                 setState(() {
                   _isOffline = true;
                 });

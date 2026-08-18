@@ -59,8 +59,8 @@ class _SignInScreenState extends State<SignInScreen> {
                   shaderCallback: (bounds) {
                     return const LinearGradient(
                       colors: <Color>[
-                        Color.fromARGB(255, 2, 2, 255), // الأزرق القوي
-                        Color.fromARGB(255, 179, 132, 233), // البنفسجي
+                        Color.fromARGB(255, 2, 2, 255), 
+                        Color.fromARGB(255, 179, 132, 233), 
                       ],
                       begin: Alignment.centerLeft, // بيبدأ الأزرق من اليسار
                       end: Alignment.centerRight, // بينتهي البنفسجي على اليمين

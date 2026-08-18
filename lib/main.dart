@@ -21,6 +21,7 @@ import 'package:art_marketplace/providers/theme_provider.dart';
 import 'package:art_marketplace/screens/edit_profile_screen.dart';
 import 'package:art_marketplace/providers/post_provider.dart';
 import 'package:art_marketplace/providers/profile_provider.dart';
+import 'package:art_marketplace/screens/create_post_screen.dart';
 
 // void main() {
 //   debugDefaultTargetPlatformOverride = TargetPlatform.iOS;
@@ -67,7 +68,7 @@ class MyApp extends StatelessWidget {
       ),
       darkTheme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color.fromARGB(255, 173, 169, 229),
+          seedColor: const Color.fromARGB(255, 182, 180, 210),
           brightness: Brightness.dark,
         ),
         useMaterial3: true,
@@ -92,6 +93,7 @@ class MyApp extends StatelessWidget {
             const SetPasswordScreen(title: "set password"),
         '/CompleteProfile': (context) => const CompleteProfileScreen(),
         '/EditProfile': (context) => const EditProfileScreen(),
+        '/CreatPost': (context) => const CreatePostScreen(),
       },
 
       debugShowCheckedModeBanner: false,

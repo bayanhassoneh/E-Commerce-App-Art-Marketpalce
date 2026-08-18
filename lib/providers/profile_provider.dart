@@ -5,11 +5,15 @@ import 'package:art_marketplace/models/app_user.dart';
 import 'package:art_marketplace/models/post.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:art_marketplace/services/follow_service.dart';
-//import 'package:supabase_flutter/supabase_flutter.dart';
+import 'dart:io';
+import 'package:art_marketplace/services/image_picker_service.dart';
+import 'package:art_marketplace/services/storage_service.dart';
 
 class ProfileProvider extends ChangeNotifier {
   final ProfileService _profileService = ProfileService();
   final FollowService _followService = FollowService();
+  final storageService _storageService = storageService();
+  final imagePickerService _pickerService = imagePickerService();
   SupabaseClient supabase = Supabase.instance.client;
   bool isLoading = false;
   List<Post> artworks = [];
@@ -18,6 +22,23 @@ class ProfileProvider extends ChangeNotifier {
   int followersCount = 0;
   int followingCount = 0;
   bool isFollowing = false;
+  File? _selectedProfileImage;
+  File? get selectedImage => _selectedProfileImage;
+
+  Future<void> updateProfileImage(String profileId) async {
+    final image = await _pickerService.pickImage();
+    if (image == null) return;
+    final imageURL = await _storageService.uploadProfileImage(
+      image,
+    ); //بترجع ال url
+    await _profileService.updateProfilePicture(
+      profileId: profileId,
+      imageUrl: imageURL,
+    );
+    await fetchUserProfile(profileId);
+    // notifyListeners();// fetchUserProfile اصلا فيها notifyListeners
+  }
+
   Future<void> fetchUserProfile(String profileUserId) async {
     profile = await _profileService.fetchUserProfile(
       profileUserId: profileUserId,

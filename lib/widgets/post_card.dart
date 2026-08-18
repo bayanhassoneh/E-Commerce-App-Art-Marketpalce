@@ -20,6 +20,7 @@ class PostCard extends StatelessWidget {
         child: Padding(
           padding: EdgeInsets.all(10),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Image.network(
                 post.imageUrl,
@@ -27,9 +28,18 @@ class PostCard extends StatelessWidget {
                 width: double.infinity,
                 fit: BoxFit.cover,
               ),
+              const SizedBox(height: 8),
 
-              Text(post.title),
-              Text("\$${post.price}"),
+              Text("\$${post.price}",              
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.deepOrange,
+                    ),),
+              const SizedBox(height: 3),
+              Text(post.title,  
+              style: TextStyle(
+                      fontSize: 14,),),
             ],
           ),
         ),

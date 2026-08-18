@@ -75,14 +75,28 @@ class _HomePageState extends State<HomePage> {
             return const Center(child: Text("No posts yet"));
           }
 
-          return ListView.builder(
+         return GridView.builder(
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              crossAxisSpacing: 10,
+              mainAxisSpacing: 10,
+              childAspectRatio: 0.7,
+            ),
             itemCount: provider.posts.length,
             itemBuilder: (context, index) {
-              final artwork = provider.posts[index];
-
+                final artwork = provider.posts[index];
               return PostCard(post: artwork);
             },
           );
+
+          // return ListView.builder(
+          //   itemCount: provider.posts.length,
+          //   itemBuilder: (context, index) {
+          //     final artwork = provider.posts[index];
+
+          //     return PostCard(post: artwork);
+          //   },
+          // );
         },
       ),
 

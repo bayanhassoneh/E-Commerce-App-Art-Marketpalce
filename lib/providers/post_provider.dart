@@ -35,7 +35,7 @@ class PostProvider extends ChangeNotifier {
 
     if (_selectedImage == null) return false;
 
-    final imageUrl = await _storageService.uploadImage(_selectedImage!);
+    final imageUrl = await _storageService.uploadPost(_selectedImage!);
 
     await _postService.createpost(
       imageUrl: imageUrl,
@@ -48,18 +48,16 @@ class PostProvider extends ChangeNotifier {
   }
 
   Future<void> fetchFeedPosts() async {
-    Future<void> fetchFeedPosts() async {
-      try {
-        _isLoading = true;
-        notifyListeners();
+    try {
+      _isLoading = true;
+      notifyListeners();
 
-        posts = await _postService.fetchFeedPosts();
-      } catch (e) {
-        debugPrint(e.toString());
-      } finally {
-        _isLoading = false;
-        notifyListeners();
-      }
+      posts = await _postService.fetchFeedPosts();
+    } catch (e) {
+      debugPrint(e.toString());
+    } finally {
+      _isLoading = false;
+      notifyListeners();
     }
   }
 }
