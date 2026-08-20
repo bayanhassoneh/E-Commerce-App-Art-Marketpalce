@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 //import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:flutter/cupertino.dart';
-import 'cart_screen.dart';
-import 'package:art_marketplace/screens/profile_screen.dart';
-import 'package:art_marketplace/providers/auth_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:art_marketplace/providers/post_provider.dart';
 import 'package:art_marketplace/widgets/post_card.dart';
@@ -17,7 +14,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  int _currentIndex = 0;
+  // int _currentIndex = 0;
   @override
   void initState() {
     super.initState();
@@ -75,28 +72,19 @@ class _HomePageState extends State<HomePage> {
             return const Center(child: Text("No posts yet"));
           }
 
-         return GridView.builder(
+          return GridView.builder(
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2,
-              crossAxisSpacing: 10,
-              mainAxisSpacing: 10,
+              crossAxisSpacing: 5,
+              mainAxisSpacing: 5,
               childAspectRatio: 0.7,
             ),
             itemCount: provider.posts.length,
             itemBuilder: (context, index) {
-                final artwork = provider.posts[index];
+              final artwork = provider.posts[index];
               return PostCard(post: artwork);
             },
           );
-
-          // return ListView.builder(
-          //   itemCount: provider.posts.length,
-          //   itemBuilder: (context, index) {
-          //     final artwork = provider.posts[index];
-
-          //     return PostCard(post: artwork);
-          //   },
-          // );
         },
       ),
 

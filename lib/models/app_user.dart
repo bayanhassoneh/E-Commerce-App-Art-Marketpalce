@@ -25,7 +25,7 @@ class AppUser {
     return AppUser(
       id: map['id'] ?? '',
       username: map['user_name'] ?? 'undefined user',
-      bio: map['bio'] ?? ' ',
+      bio: map['bio'] ?? '',
       profilePicture: map['cover_url'] ?? '',
       socialLink: map['social_link'] ?? '',
       location: map['location'] ?? '',

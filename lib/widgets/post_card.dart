@@ -9,7 +9,7 @@ class PostCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.pushNamed(context, '/product', arguments: post);
+        Navigator.pushNamed(context, '/Product', arguments: post);
       },
       child: Card(
         clipBehavior: Clip.antiAlias,
@@ -30,16 +30,21 @@ class PostCard extends StatelessWidget {
               ),
               const SizedBox(height: 8),
 
-              Text("\$${post.price}",              
-                    style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.deepOrange,
-                    ),),
+              Text(
+                "\$${post.price}",
+                style: TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.deepOrange,
+                ),
+              ),
               const SizedBox(height: 3),
-              Text(post.title,  
-              style: TextStyle(
-                      fontSize: 14,),),
+              Text(
+                post.title,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(fontSize: 14),
+              ),
             ],
           ),
         ),

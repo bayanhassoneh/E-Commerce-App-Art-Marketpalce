@@ -24,7 +24,7 @@ class PostService {
         .from('artworks')
         .select(''' 
     *,
-    profiles(
+    profiles( 
     user_name,
     cover_url
     )

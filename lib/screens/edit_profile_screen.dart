@@ -19,13 +19,27 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   final TextEditingController _socialLinkeController = TextEditingController();
   final TextEditingController _locationController = TextEditingController();
   final TextEditingController _usernameController = TextEditingController();
-
+  bool _initialized = false;
   @override
   void dispose() {
     _bioController.dispose();
     _socialLinkeController.dispose();
     _locationController.dispose();
+    _usernameController.dispose();
     super.dispose();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (!_initialized) {
+      final profile = ModalRoute.of(context)!.settings.arguments as AppUser;
+      _bioController.text = profile.bio;
+      _socialLinkeController.text = profile.socialLink;
+      _locationController.text = profile.location;
+      _usernameController.text = profile.username;
+      _initialized = true;
+    }
   }
 
   @override
@@ -112,6 +126,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 15,
+                        color: Colors.blueGrey,
                       ),
                     ),
                   ),
@@ -128,18 +143,14 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   hint: 'username',
                   controller: _usernameController,
                 ),
-
                 const Divider(height: 40, thickness: 1),
-
                 Text(
                   'bio',
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
                 ),
                 SizedBox(height: 10),
                 SeconedTextField(hint: 'bio', controller: _bioController),
-                // SizedBox(height: 10),
                 const Divider(height: 40, thickness: 1),
-
                 Text(
                   'location',
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
@@ -164,8 +175,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
                 Align(
                   alignment: Alignment.center,
-                  child: OutlinedButton(
-                    style: OutlinedButton.styleFrom(
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
                       side: const BorderSide(
                         color: Color.fromARGB(255, 156, 153, 173),
                         width: 1,
@@ -174,13 +185,22 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         borderRadius: BorderRadius.circular(5),
                       ),
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      context.read<ProfileProvider>().updateProfile(
+                        profile.id,
+                        _usernameController.text,
+                        _bioController.text,
+                        _locationController.text,
+                        _socialLinkeController.text,
+                      );
+                    },
 
                     child: Text(
                       'save changes',
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 15,
+                        color: Colors.blueGrey,
                       ),
                     ),
                   ),

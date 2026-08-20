@@ -17,7 +17,7 @@ class ProfileService {
   Future<List<Post>> fetchUserArtworks({required String profileUserId}) async {
     final List<dynamic> data = await _supabase
         .from('artworks')
-        .select()
+        .select('*, profiles(user_name)') //بستخدم '''triple quotes
         .eq('user_id', profileUserId);
     return data.map((item) => Post.fromMap(item)).toList();
   }
@@ -28,7 +28,25 @@ class ProfileService {
   }) async {
     await _supabase
         .from('profiles')
-        .update({'profilePicture': imageUrl})
+        .update({'cover_url': imageUrl})
+        .eq('id', profileId);
+  }
+
+  Future<void> updateProfile({
+    required String profileId,
+    required String username,
+    required String bio,
+    required String location,
+    required String socialLinke,
+  }) async {
+    await _supabase
+        .from('profiles')
+        .upsert({
+          'user_name': username,
+          'bio': bio,
+          'location': location,
+          'social_link': socialLinke,
+        })
         .eq('id', profileId);
   }
 

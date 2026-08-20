@@ -28,6 +28,7 @@ class ProfileProvider extends ChangeNotifier {
   Future<void> updateProfileImage(String profileId) async {
     final image = await _pickerService.pickImage();
     if (image == null) return;
+    final oldUrl = profile?.profilePicture;
     final imageURL = await _storageService.uploadProfileImage(
       image,
     ); //بترجع ال url
@@ -35,8 +36,28 @@ class ProfileProvider extends ChangeNotifier {
       profileId: profileId,
       imageUrl: imageURL,
     );
+    if (oldUrl != null && oldUrl.isNotEmpty) {
+      await _storageService.deleteProfileImage(oldUrl);
+    }
     await fetchUserProfile(profileId);
     // notifyListeners();// fetchUserProfile اصلا فيها notifyListeners
+  }
+
+  Future<void> updateProfile(
+    String profileId,
+    String username,
+    String bio,
+    String location,
+    String socialLinke,
+  ) async {
+    await _profileService.updateProfile(
+      profileId: profileId,
+      username: username,
+      bio: bio,
+      location: location,
+      socialLinke: socialLinke,
+    );
+    await fetchUserProfile(profileId);
   }
 
   Future<void> fetchUserProfile(String profileUserId) async {

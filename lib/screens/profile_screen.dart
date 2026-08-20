@@ -4,7 +4,6 @@ import 'package:art_marketplace/providers/auth_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:art_marketplace/providers/post_provider.dart';
-import 'package:art_marketplace/screens/create_post_screen.dart';
 import 'package:art_marketplace/widgets/app_drawer.dart';
 import 'package:art_marketplace/providers/profile_provider.dart';
 import 'package:art_marketplace/widgets/BottomNavigationBar.dart';
@@ -36,6 +35,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
     final provider = context.watch<ProfileProvider>();
     final String? currentUserId = authProvider.currentUserId;
     final bool isMyProfile = currentUserId == widget.profileUserId;
+    if (provider.isLoading || provider.profile == null) {
+      return const Scaffold(body: Center(child: CircularProgressIndicator()));
+    }
     final profile = provider.profile;
     final date = DateTime.parse(profile!.joinedDate);
     return Scaffold(
@@ -67,8 +69,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 children: [
                   CircleAvatar(
                     radius: 40,
-                    backgroundImage:
-                        profile != null && profile.profilePicture.isNotEmpty
+                    backgroundImage: profile.profilePicture.isNotEmpty
                         ? NetworkImage(profile.profilePicture)
                         : const AssetImage('assets/images/default_avatar.png'),
                   ),
@@ -94,14 +95,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
                 ],
               ),
-              const SizedBox(height: 5),
-              Text(profile?.location ?? ''),
-              const SizedBox(height: 1),
-              Text(profile?.bio ?? ''),
-              const SizedBox(height: 1),
-              Text(profile?.socialLink ?? ''),
-              const SizedBox(height: 1),
-              Text('sence ${DateFormat('MMMM yyyy').format(date)}'),
+              const SizedBox(height: 15),
+              Text(profile.location),
+              if (profile.bio.isNotEmpty) Text(profile.bio),
+              if (profile.socialLink.isNotEmpty) Text(profile.socialLink),
+              Text(
+                'sence ${DateFormat('MMMM yyyy').format(date)}',
+                style: TextStyle(
+                  color: const Color.fromARGB(255, 114, 112, 112),
+                ),
+              ),
               const SizedBox(height: 10),
               isMyProfile
                   ? ElevatedButton(
@@ -155,7 +158,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                         onPressed: () {
                                           context
                                               .read<ProfileProvider>()
-                                              .unfollow(profile!.id);
+                                              .unfollow(profile.id);
 
                                           Navigator.pop(context);
                                         },
@@ -236,7 +239,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ],
                   ),
                 ),
-
+              SizedBox(height: 10),
               GridView.builder(
                 shrinkWrap: true,
                 physics:
@@ -245,12 +248,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 3, //عدد الشبكه
                   childAspectRatio: 1,
+                  mainAxisSpacing: 3,
+                  crossAxisSpacing: 3,
                 ),
                 itemBuilder: (context, index) {
                   final post = provider.artworks[index];
                   return GestureDetector(
                     onTap: () {
-                      Navigator.pushNamed(context, '/product', arguments: post);
+                      Navigator.pushNamed(context, '/Product', arguments: post);
                     },
                     child: ClipRRect(
                       child: Image.network(post.imageUrl, fit: BoxFit.cover),
