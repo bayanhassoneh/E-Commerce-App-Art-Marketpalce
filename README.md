@@ -1,5 +1,18 @@
 
-# Art Marketplace 🎨
+
+<div align="center">
+
+  <img src="assets/images/launcher_icon.png" width="65" alt="App Icon" />
+
+  # Art Marketplace 
+
+  <p>
+    <a href="https://flutter.dev"><img src="https://img.shields.io/badge/Flutter-02569B?style=for-the-badge&logo=flutter&logoColor=white" alt="Flutter"></a>
+    <a href="https://dart.dev"><img src="https://img.shields.io/badge/Dart-0175C2?style=for-the-badge&logo=dart&logoColor=white" alt="Dart"></a>
+    <a href="https://supabase.com"><img src="https://img.shields.io/badge/Supabase-3ECF8E?style=for-the-badge&logo=supabase&logoColor=white" alt="Supabase"></a>
+  </p>
+
+</div>
 
 A mobile application built with **Flutter** and **Supabase** that allows artists to showcase and sell their mixed-media works, sculptures, and paintings.
 
@@ -17,15 +30,16 @@ the Marketplace is designed to bridge the gap between local artists and art enth
 * **Backend:** Supabase (PostgreSQL-manual SQL scripts)
 * **State Management:** (provider)
 * **Database Logic:** Custom SQL Triggers & RLS Policies.
+* **App Launcher Icon:** Managed via `flutter_launcher_icons`
 
 ## 📸 Screenshots
 <p align="left">
-  <img src="screenshots/signInScreen.png" width="30%" />
-  <img src="screenshots/profile.png" width="30%" />
-  <img src="screenshots/createpost.png" width="30%" />
-    <img src="screenshots/forgetPasswordScreen.png" width="30%" />
-      <img src="screenshots/home.png" width="30%" />
-   <img src="screenshots/post.png" width="30%" />
+  <img src="screenshots/signInScreen.png" width="20%" />
+  <img src="screenshots/profile.png" width="20%" />
+  <img src="screenshots/createpost.png" width="20%" />
+    <img src="screenshots/forgetPasswordScreen.png" width="20%" />
+      <img src="screenshots/home.png" width="20%" />
+   <img src="screenshots/post.png" width="20%" />
 </p>
 
 ## ERD
@@ -50,7 +64,7 @@ As an aspiring Software Engineer, I focused on:
 art_marketplace/
 ├── lib/
 │   ├── core/
-│   ├── modles/
+│   ├── models/
 │   ├── providers/
 │   ├── screens/
 │   ├── services/
