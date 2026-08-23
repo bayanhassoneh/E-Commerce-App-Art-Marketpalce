@@ -47,7 +47,7 @@ class _HomePageState extends State<HomePage> {
                 // السطر اللي فوق بضمن إنه الـ 0 و 0 هي أول النص، والجرادينت بيمشي على قد عرض النص بالظبط
               },
               child: const Text(
-                'PayPaint',
+                'PaintPay',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 20,

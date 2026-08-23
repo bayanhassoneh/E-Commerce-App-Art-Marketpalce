@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:art_marketplace/widgets/BottomNavigationBar.dart';
+import 'package:art_marketplace/providers/cart_provider.dart';
+import 'package:provider/provider.dart';
+import 'package:art_marketplace/widgets/post_card.dart';
 
 class CartScreen extends StatefulWidget {
   const CartScreen({super.key});
@@ -12,12 +15,11 @@ class CartScreen extends StatefulWidget {
 class _CartScreenState extends State<CartScreen> {
   @override
   Widget build(BuildContext context) {
+    final cartProvider = context.watch<CartProvider>();
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(44.0), // الارتفاع القياسي لآيفون
+        preferredSize: const Size.fromHeight(44.0),
         child: CupertinoNavigationBar(
-          // transitionBetweenRoutes: false,
-          // heroTag: 'profileNavBar',
           middle: Text(
             'cart',
             style: TextStyle(
@@ -29,15 +31,11 @@ class _CartScreenState extends State<CartScreen> {
         ),
       ),
 
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(35.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-
-            children: [],
-          ),
-        ),
+      body: ListView.builder(
+        itemCount: cartProvider.cartItems.length,
+        itemBuilder: (context, index) {
+          return PostCard(post: cartProvider.cartItems[index]);
+        },
       ),
       bottomNavigationBar: MainBottomNavigationBar(currentIndex: 2),
     );

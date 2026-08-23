@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:art_marketplace/models/post.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:art_marketplace/providers/cart_provider.dart';
+import 'package:provider/provider.dart';
 
 class ProductScreen extends StatefulWidget {
   const ProductScreen({super.key});
@@ -16,6 +18,8 @@ class _ProductScreenState extends State<ProductScreen> {
   @override
   Widget build(BuildContext context) {
     final post = ModalRoute.of(context)!.settings.arguments as Post;
+    final cartProvider = context.watch<CartProvider>();
+    bool added = cartProvider.isIncart(post);
     final date = DateTime.parse(post.createdAt);
     return Scaffold(
       appBar: PreferredSize(
@@ -50,9 +54,9 @@ class _ProductScreenState extends State<ProductScreen> {
                     alignment: Alignment.center,
                     child: OutlinedButton(
                       onPressed: () {
-                        setState(() {
-                          added = !added;
-                        });
+                        added
+                            ? cartProvider.removeFromCart(post)
+                            : cartProvider.addToCart(post);
                       },
                       child: added
                           ? Row(
