@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:art_marketplace/widgets/BottomNavigationBar.dart';
 import 'package:art_marketplace/providers/cart_provider.dart';
 import 'package:provider/provider.dart';
-import 'package:art_marketplace/widgets/post_card.dart';
+import 'package:art_marketplace/widgets/cart_card.dart';
 
 class CartScreen extends StatefulWidget {
   const CartScreen({super.key});
@@ -34,7 +34,7 @@ class _CartScreenState extends State<CartScreen> {
       body: ListView.builder(
         itemCount: cartProvider.cartItems.length,
         itemBuilder: (context, index) {
-          return PostCard(post: cartProvider.cartItems[index]);
+          return CartCard(post: cartProvider.cartItems[index]);
         },
       ),
       bottomNavigationBar: MainBottomNavigationBar(currentIndex: 2),
