@@ -24,7 +24,8 @@ the Marketplace is designed to bridge the gap between local artists and art enth
 * **Mixed-Media Showcase:** Support for various art forms (visual tributes, posters, sculptures).
 * **Secure Authentication:** Managed via Supabase Auth.
 * **Robust Backend:** Utilizing SQL triggers, Row Level Security (RLS), and optimized database schemas.
-
+## Planned / Upcoming
+* **Stripe payment integration**
 ## 🛠️ Tech Stack
 * **Frontend:** Flutter (Dart)
 * **Backend:** Supabase (PostgreSQL-manual SQL scripts)
@@ -49,7 +50,7 @@ For the full-resolution diagram:
 
 [📄 ERD PDF](docs/ERD.pdf)
 
-## 👷 Technical Highlights
+##  Technical Highlights
 As an aspiring Software Engineer, I focused on:
 * Implementing **Clean Code** principles and reusable UI components.
 * Designing a secure database schema with **PostgreSQL** scripts via the SQL Editor. 
