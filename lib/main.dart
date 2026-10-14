@@ -31,6 +31,7 @@ import 'package:art_marketplace/screens/create_post_screen.dart';
 //i use it to check ios emulater
 void main() async {
   WidgetsFlutterBinding.ensureInitialized(); //it accure when runapp,but i used await so i should ensure first
+  //
   try {
     await Supabase.initialize(
       url: 'https://pjvkgmqbztlgzzacesob.supabase.co',
@@ -99,10 +100,12 @@ class MyApp extends StatelessWidget {
       },
 
       debugShowCheckedModeBanner: false,
-      title: 'PayPaint ',
+      title: 'PayPaint',
       builder: (context, child) {
         return InternetCheckerWrapper(child: child!);
       },
+      //البيلدر هون بتيحلي ويدجيت  يغلف محتوى التطبيق كله
+      //الشايلد هون هو الويدجيت اللي بمررها فلاتر للبيلدر (اي محتوى التطبيق )
     );
   }
 }

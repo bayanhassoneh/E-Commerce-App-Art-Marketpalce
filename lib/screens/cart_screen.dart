@@ -31,11 +31,31 @@ class _CartScreenState extends State<CartScreen> {
         ),
       ),
 
-      body: ListView.builder(
-        itemCount: cartProvider.cartItems.length,
-        itemBuilder: (context, index) {
-          return CartCard(post: cartProvider.cartItems[index]);
-        },
+      body: Padding(
+        padding: EdgeInsets.all(30),
+        child: Column(
+          children: [
+            Expanded(
+              child: ListView.builder(
+                shrinkWrap: true,
+                //بخلي ال listview تاخد طول محتواها مش اكبر مساحه ممكنه
+                physics: NeverScrollableScrollPhysics(),
+                //بتمنع لسكرول لمنع التضارب
+                itemCount: cartProvider.cartItems.length,
+                itemBuilder: (context, index) {
+                  final reversedIndex =
+                      cartProvider.cartItems.length - 1 - index;
+                  return CartCard(post: cartProvider.cartItems[reversedIndex]);
+                },
+              ),
+            ),
+
+            Text(
+              'Total price: ',
+              style: TextStyle(fontSize: 20, color: Colors.amber),
+            ),
+          ],
+        ),
       ),
       bottomNavigationBar: MainBottomNavigationBar(currentIndex: 2),
     );

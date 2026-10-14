@@ -12,7 +12,7 @@ class AuthService {
   Future<void> initGoogle() async {
     print("initGoogle called");
     await _googleSignIn.initialize(
-      // clientId:
+      // clientId: 
       //     '894617253593-h42g2i51hmnjsc2u7nq6m63j5umajr1a.apps.googleusercontent.com',
       serverClientId:
           '894617253593-h42g2i51hmnjsc2u7nq6m63j5umajr1a.apps.googleusercontent.com',
