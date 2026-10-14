@@ -9,6 +9,10 @@ class AuthService {
   final GoogleSignIn _googleSignIn = GoogleSignIn.instance;
   StreamSubscription<GoogleSignInAuthenticationEvent>? _authSubscription;
   static const List<String> scopes = ['email', 'profile', 'openid'];
+  //لسكوبس لتحديد المعلومات اللي بدي صلاحية للتعامل معها من جوجل 
+  //openid//متعلق بالتحقق من هوية المستخدم باستخدام OpenID Connect.
+  //email//لطلب الوصول إلى معلومات البريد الإلكتروني للمستخدم.
+  //profile//لطلب الوصول إلى معلومات الملف الشخصي الأساسية، مثل الاسم والصورة.
   Future<void> initGoogle() async {
     print("initGoogle called");
     await _googleSignIn.initialize(
@@ -39,6 +43,7 @@ class AuthService {
       print('Google Sign In Success for: ${googleUser.email}');
       final googleAuth = await googleUser.authentication;
       final idToken = googleAuth.idToken;
+      //الايدي توكن هو اثبات لهوية المستخدم
       // final accessToken = googleAuth.accessToken;
 
       if (idToken == null) {
@@ -48,14 +53,18 @@ class AuthService {
       var auth = await googleUser.authorizationClient.authorizationForScopes(
         scopes,
       );
+      //الحاله الاولى//authorization tokens للنطاقات المطلوبة بدون ما يحتاج المستخدم يتفاعل مرة ثانية
       auth ??= await googleUser.authorizationClient.authorizeScopes(scopes);
+      //اذا ما نجحت الحاله الاولى //if it's null
+      //إذا ما حصلت على authorization في المحاولة الأولى، اطلب الصلاحيات بالطريقة اللي تسمح بالتفاعل مع المستخدم.
       final accessToken = auth.accessToken;
+      //الاكسس توكن هو تصريح للوصول لموارد جوجل المطلوبة ضمن السكوبس
 
       await _supabase.auth.signInWithIdToken(
         provider: OAuthProvider.google,
         idToken: idToken,
         accessToken: accessToken,
-      );
+      );//لازم احكيله مين البروفايدر اللي اعطاني التوكنز
       print('Signed in successfully!');
       // } else {
       //   // fallback للمنصات الأخرى

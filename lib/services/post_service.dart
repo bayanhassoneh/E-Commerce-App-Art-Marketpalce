@@ -28,9 +28,13 @@ class PostService {
     user_name,
     cover_url
     )
-    ''')
+    '''
+//triple-quoted string لما لسترينج على اكتر من سطر 
+//نفس .select('*, profiles(user_name, cover_url)')
+)
         .order('created_at', ascending: false)
         .limit(25);
     return response.map((post) => Post.fromMap(post)).toList();
+    //list of map converted to modle
   }
 }

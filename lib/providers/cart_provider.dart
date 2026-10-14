@@ -17,4 +17,8 @@ class CartProvider extends ChangeNotifier {
   bool isIncart(Post item) {
     return cartItems.any((cartItem) => cartItem.id == item.id);
   }
+
+  double get totalPrice {
+    return cartItems.fold(0.0, (total, item) => total + item.price);
+  }
 }

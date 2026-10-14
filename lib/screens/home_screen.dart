@@ -14,7 +14,14 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  // int _currentIndex = 0;
+  final TextEditingController _searchEditingController =
+      TextEditingController();
+  @override
+  void dispose() {
+    _searchEditingController.dispose();
+    super.dispose();
+  }
+
   @override
   void initState() {
     super.initState();
@@ -62,30 +69,60 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
 
-      body: Consumer<PostProvider>(
-        builder: (context, provider, child) {
-          if (provider.isLoading) {
-            return const Center(child: CircularProgressIndicator());
-          }
+      body: Padding(
+        padding: EdgeInsets.all(20),
+        child: Column(
+          children: [
+            TextFormField(
+              readOnly: true,
+              controller: _searchEditingController,
+              // validator:(value){
 
-          if (provider.posts.isEmpty) {
-            return const Center(child: Text("No posts yet"));
-          }
-
-          return GridView.builder(
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              crossAxisSpacing: 5,
-              mainAxisSpacing: 5,
-              childAspectRatio: 0.7,
+              // } ,
+              decoration: InputDecoration(
+                labelText: 'search artworks or artists',
+                labelStyle: TextStyle(color: Colors.grey),
+                prefixIcon: Icon(Icons.search),
+                border: OutlineInputBorder(),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                  borderSide: BorderSide(color: Colors.grey),
+                ),
+              ),
+              onTap: () {
+                Navigator.pushNamed(context, '/search');
+              },
             ),
-            itemCount: provider.posts.length,
-            itemBuilder: (context, index) {
-              final artwork = provider.posts[index];
-              return PostCard(post: artwork);
-            },
-          );
-        },
+            Consumer<PostProvider>(
+              builder: (context, provider, child) {
+                if (provider.isLoading) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+
+                if (provider.posts.isEmpty) {
+                  return const Center(child: Text("No posts yet"));
+                }
+
+                return Expanded(
+                  child: GridView.builder(
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          crossAxisSpacing: 5,
+                          mainAxisSpacing: 5,
+                          childAspectRatio: 0.7,
+                        ),
+                    itemCount: provider.posts.length,
+                    itemBuilder: (context, index) {
+                      final artwork = provider.posts[index];
+                      return PostCard(post: artwork);
+                    },
+                  ),
+                );
+              },
+            ),
+          ],
+        ),
       ),
 
       bottomNavigationBar: MainBottomNavigationBar(currentIndex: 0),

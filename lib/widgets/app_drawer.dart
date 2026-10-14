@@ -22,13 +22,18 @@ class AppDrawer extends StatelessWidget {
 
           ListTile(
             leading: Switch(
+              //ممكن اذا بدي الكبسة تكون بعرض الشاشه استخدم switchListTile
+              activeThumbColor: Colors.blueAccent,
+              inactiveThumbColor: Colors.blueGrey,
+              activeTrackColor: Colors.blueGrey,
+              inactiveTrackColor: Colors.grey,
               value: context.watch<ThemeProvider>().themeMode == ThemeMode.dark,
               onChanged: (value) {
                 context.read<ThemeProvider>().toggleTheme(value);
               },
             ),
             title: Text('application mood'),
-            onTap: () {},
+            // onTap: () {}, لانه نفس وظيفة الاون شينج
           ),
 
           ListTile(
@@ -37,7 +42,9 @@ class AppDrawer extends StatelessWidget {
             onTap: () {
               showDialog(
                 context: context,
+                //كونتيكست الويدجيت اللي اتسدعت الدايالوج
                 builder: (context) {
+                  //Dialog's context
                   return AlertDialog(
                     title: Text("logout"),
                     content: Text("Do you want to logout?"),
@@ -46,6 +53,7 @@ class AppDrawer extends StatelessWidget {
                       TextButton(
                         onPressed: () {
                           Navigator.pop(context);
+                          //الكونتكست اللي داخل البيلدر اي تاع الداايالوج نفسها
                         },
                         child: Text("Cancel"),
                       ),
@@ -55,6 +63,7 @@ class AppDrawer extends StatelessWidget {
                           await context.read<AuthProvider>().signOut();
                           if (context.mounted) {
                             Navigator.pop(context);
+                            //بنتأكد إن الصفحة/الـ Widget لسه موجودة، وبس إذا موجودة بنعمل pop.
                           }
                         },
                         child: Text("logout"),

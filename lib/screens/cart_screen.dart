@@ -32,14 +32,15 @@ class _CartScreenState extends State<CartScreen> {
       ),
 
       body: Padding(
-        padding: EdgeInsets.all(30),
+        padding: EdgeInsets.all(20),
         child: Column(
           children: [
             Expanded(
+              //بتععطي المساحه المتبقيه 
               child: ListView.builder(
                 shrinkWrap: true,
                 //بخلي ال listview تاخد طول محتواها مش اكبر مساحه ممكنه
-                physics: NeverScrollableScrollPhysics(),
+                //  physics: NeverScrollableScrollPhysics(),
                 //بتمنع لسكرول لمنع التضارب
                 itemCount: cartProvider.cartItems.length,
                 itemBuilder: (context, index) {
@@ -49,10 +50,12 @@ class _CartScreenState extends State<CartScreen> {
                 },
               ),
             ),
-
+TextButton(
+  onPressed: , 
+child: Text('checkout')),
             Text(
-              'Total price: ',
-              style: TextStyle(fontSize: 20, color: Colors.amber),
+              'Total price:${cartProvider.totalPrice}',
+              style: TextStyle(fontSize: 20, color: const Color.fromARGB(255, 255, 98, 7)),
             ),
           ],
         ),

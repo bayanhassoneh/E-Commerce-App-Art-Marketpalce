@@ -23,6 +23,7 @@ import 'package:art_marketplace/screens/edit_profile_screen.dart';
 import 'package:art_marketplace/providers/post_provider.dart';
 import 'package:art_marketplace/providers/profile_provider.dart';
 import 'package:art_marketplace/screens/create_post_screen.dart';
+import 'package:art_marketplace/screens/search_screen.dart';
 
 // void main() {
 //   debugDefaultTargetPlatformOverride = TargetPlatform.iOS;
@@ -97,6 +98,7 @@ class MyApp extends StatelessWidget {
         '/CompleteProfile': (context) => const CompleteProfileScreen(),
         '/EditProfile': (context) => const EditProfileScreen(),
         '/CreatPost': (context) => const CreatePostScreen(),
+        '/search':(context)=> const SearchScreen(),
       },
 
       debugShowCheckedModeBanner: false,

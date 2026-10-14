@@ -43,15 +43,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(44.0), // الارتفاع القياسي لآيفون
-        child: CupertinoNavigationBar(
-          //transitionBetweenRoutes: false,
-          // heroTag: 'profileNavBar',
-          middle: Text(
-            provider.profile?.username ?? '',
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 20,
-              color: const Color.fromARGB(115, 5, 5, 5),
+        child: Builder(
+          builder: (context) => CupertinoNavigationBar(
+            leading: isMyProfile
+                ? CupertinoButton(
+                  padding: EdgeInsets.zero,
+                    child: const Icon(CupertinoIcons.line_horizontal_3),
+                    onPressed: () {
+                      Scaffold.of(context).openDrawer();
+                    },
+                  )
+                : null,
+            middle: Text(
+              provider.profile?.username ?? '',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 20,
+                color: const Color.fromARGB(115, 5, 5, 5),
+              ),
             ),
           ),
         ),
