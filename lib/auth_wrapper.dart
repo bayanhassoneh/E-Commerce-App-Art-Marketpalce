@@ -66,7 +66,8 @@ class _AuthWrapperState extends State<AuthWrapper> {
 
       // تحديث بيانات المستخدم الحالي
       _user = data.session?.user;
-
+      print('Auth event: ${data.event}');
+      print('User after auth event: ${_user?.id}');
       if (_user != null) {
         setState(() {
           isLoading = true;

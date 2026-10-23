@@ -12,9 +12,14 @@ class AppDrawer extends StatelessWidget {
       child: ListView(
         padding: EdgeInsets.zero,
         children: <Widget>[
-          DrawerHeader(
-            decoration: BoxDecoration(color: Colors.blue),
-            child: Text(
+          Container(
+            height: 150,
+            decoration: BoxDecoration(
+              color: const Color.fromARGB(255, 96, 33, 243),
+            ),
+            alignment: Alignment.topLeft,
+            padding: EdgeInsets.all(20),
+            child: const Text(
               'menu',
               style: TextStyle(color: Colors.white, fontSize: 24),
             ),
@@ -23,22 +28,22 @@ class AppDrawer extends StatelessWidget {
           ListTile(
             leading: Switch(
               //ممكن اذا بدي الكبسة تكون بعرض الشاشه استخدم switchListTile
-              activeThumbColor: Colors.blueAccent,
-              inactiveThumbColor: Colors.blueGrey,
-              activeTrackColor: Colors.blueGrey,
-              inactiveTrackColor: Colors.grey,
+              activeThumbColor: const Color.fromARGB(255, 68, 77, 255),
+              inactiveThumbColor: const Color.fromARGB(255, 99, 115, 122),
+              activeTrackColor: const Color.fromARGB(255, 162, 197, 214),
+              inactiveTrackColor: const Color.fromARGB(255, 191, 190, 190),
               value: context.watch<ThemeProvider>().themeMode == ThemeMode.dark,
               onChanged: (value) {
                 context.read<ThemeProvider>().toggleTheme(value);
               },
             ),
-            title: Text('application mood'),
+            title: const Text('Dark mood', style: TextStyle(fontSize: 20)),
             // onTap: () {}, لانه نفس وظيفة الاون شينج
           ),
 
           ListTile(
             leading: const Icon(Icons.logout),
-            title: const Text("Logout"),
+            title: const Text("Logout", style: TextStyle(fontSize: 20)),
             onTap: () {
               showDialog(
                 context: context,
@@ -46,8 +51,14 @@ class AppDrawer extends StatelessWidget {
                 builder: (context) {
                   //Dialog's context
                   return AlertDialog(
-                    title: Text("logout"),
-                    content: Text("Do you want to logout?"),
+                    alignment: Alignment.center,
+                    actionsAlignment: MainAxisAlignment.center,
+                    title: const Text("logout", textAlign: TextAlign.center),
+                    content: const Text(
+                      "Do you want to logout?",
+                      style: TextStyle(fontSize: 16),
+                      textAlign: TextAlign.center,
+                    ),
 
                     actions: [
                       TextButton(
@@ -55,7 +66,12 @@ class AppDrawer extends StatelessWidget {
                           Navigator.pop(context);
                           //الكونتكست اللي داخل البيلدر اي تاع الداايالوج نفسها
                         },
-                        child: Text("Cancel"),
+                        child: const Text(
+                          "Cancel",
+                          style: TextStyle(
+                            color: const Color.fromARGB(255, 90, 68, 255),
+                          ),
+                        ),
                       ),
 
                       TextButton(
@@ -64,9 +80,15 @@ class AppDrawer extends StatelessWidget {
                           if (context.mounted) {
                             Navigator.pop(context);
                             //بنتأكد إن الصفحة/الـ Widget لسه موجودة، وبس إذا موجودة بنعمل pop.
+                            //widget means AlertDialog
                           }
                         },
-                        child: Text("logout"),
+                        child: const Text(
+                          "logout",
+                          style: TextStyle(
+                            color: const Color.fromARGB(255, 90, 68, 255),
+                          ),
+                        ),
                       ),
                     ],
                   );

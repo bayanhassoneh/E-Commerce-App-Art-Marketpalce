@@ -11,7 +11,7 @@ class MainBottomNavigationBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return BottomNavigationBar(
       currentIndex: currentIndex,
-      selectedItemColor: Color.fromARGB(255, 49, 49, 192),
+      selectedItemColor: Color.fromARGB(255, 89, 46, 241),
       type: BottomNavigationBarType.fixed,
       onTap: (index) {
         if (index == currentIndex) return;

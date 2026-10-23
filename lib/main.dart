@@ -1,4 +1,5 @@
 import 'package:art_marketplace/providers/cart_provider.dart';
+import 'package:art_marketplace/providers/search_provider.dart';
 import 'package:art_marketplace/screens/cart_screen.dart';
 import 'package:art_marketplace/screens/product_screen.dart';
 import 'package:art_marketplace/screens/profile_screen.dart';
@@ -52,6 +53,7 @@ void main() async {
         ChangeNotifierProvider(create: (_) => PostProvider()),
         ChangeNotifierProvider(create: (_) => ProfileProvider()),
         ChangeNotifierProvider(create: (_) => CartProvider()),
+        ChangeNotifierProvider(create: (_) => SearchProvider()),
       ],
       child: MyApp(),
     ),
@@ -98,7 +100,7 @@ class MyApp extends StatelessWidget {
         '/CompleteProfile': (context) => const CompleteProfileScreen(),
         '/EditProfile': (context) => const EditProfileScreen(),
         '/CreatPost': (context) => const CreatePostScreen(),
-        '/search':(context)=> const SearchScreen(),
+        '/search': (context) => const SearchScreen(),
       },
 
       debugShowCheckedModeBanner: false,

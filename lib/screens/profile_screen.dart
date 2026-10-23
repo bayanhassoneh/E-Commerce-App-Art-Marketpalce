@@ -47,8 +47,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
           builder: (context) => CupertinoNavigationBar(
             leading: isMyProfile
                 ? CupertinoButton(
-                  padding: EdgeInsets.zero,
-                    child: const Icon(CupertinoIcons.line_horizontal_3),
+                    padding: EdgeInsets.zero,
+                    child: const Icon(
+                      CupertinoIcons.line_horizontal_3,
+                      color: Color.fromARGB(255, 89, 46, 241),
+                    ),
                     onPressed: () {
                       Scaffold.of(context).openDrawer();
                     },

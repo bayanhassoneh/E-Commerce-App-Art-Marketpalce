@@ -13,8 +13,12 @@ class CartCard extends StatelessWidget {
       },
       child: Card(
         clipBehavior: Clip.antiAlias,
+        //لقص اللي بطلع عن زوايا الريديوس
         elevation: 2,
-        margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+        //بروز الكارد عن السطح
+        margin: const EdgeInsets.symmetric(vertical: 8),
+        //horizontal: 12,جوانب
+        //verticalفوق وتحت
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
 
         child: Padding(

@@ -1,9 +1,11 @@
+import 'package:art_marketplace/models/app_user.dart';
+import 'package:art_marketplace/models/post.dart';
 import 'package:art_marketplace/services/search_service.dart';
 import 'package:flutter/material.dart';
 
 class SearchProvider extends ChangeNotifier {
-  List<Map<String, dynamic>>? artworksFutur;
-  List<Map<String, dynamic>>? usresFuture;
+  List<Post>? artworksFutur;
+  List<AppUser>? usresFuture;
   SearchService _searchService = SearchService();
   void performsearch(String value) {
     final query = value.trim();

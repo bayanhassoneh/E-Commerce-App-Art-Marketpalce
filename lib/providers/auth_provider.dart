@@ -37,7 +37,7 @@ class AuthProvider extends ChangeNotifier {
     Supabase.instance.client.auth.onAuthStateChange.listen((data) {
       notifyListeners();
     });
-  } 
+  }
 
   Future<void> googleSignIn() async {
     _isLoading = true;

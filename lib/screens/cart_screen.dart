@@ -31,36 +31,57 @@ class _CartScreenState extends State<CartScreen> {
         ),
       ),
 
-      body: Padding(
-        padding: EdgeInsets.all(20),
-        child: Column(
-          children: [
-            Expanded(
-              //بتععطي المساحه المتبقيه 
-              child: ListView.builder(
-                shrinkWrap: true,
-                //بخلي ال listview تاخد طول محتواها مش اكبر مساحه ممكنه
-                //  physics: NeverScrollableScrollPhysics(),
-                //بتمنع لسكرول لمنع التضارب
-                itemCount: cartProvider.cartItems.length,
-                itemBuilder: (context, index) {
-                  final reversedIndex =
-                      cartProvider.cartItems.length - 1 - index;
-                  return CartCard(post: cartProvider.cartItems[reversedIndex]);
-                },
+      body: Column(
+        children: [
+          Expanded(
+            //بتععطي المساحه المتبقيه
+            child: cartProvider.cartItems.isEmpty
+                ? const Center(
+                    child: Text(
+                      'cart is empty.',
+                      style: TextStyle(
+                        fontSize: 18,
+                        color: Color.fromARGB(174, 255, 109, 64),
+                      ),
+                    ),
+                  )
+                : ListView.builder(
+                    shrinkWrap: true,
+
+                    //بخلي ال listview تاخد طول محتواها مش اكبر مساحه ممكنه
+                    //  physics: NeverScrollableScrollPhysics(),
+                    //بتمنع لسكرول لمنع التضارب
+                    itemCount: cartProvider.cartItems.length,
+                    itemBuilder: (context, index) {
+                      final reversedIndex =
+                          cartProvider.cartItems.length - 1 - index;
+                      return CartCard(
+                        post: cartProvider.cartItems[reversedIndex],
+                      );
+                    },
+                  ),
+          ),
+
+          // TextButton(
+          //  onPressed: ,
+
+          // child: Text('checkout')),
+          Container(
+            height: 70,
+            width: double.infinity,
+            color: const Color.fromARGB(255, 226, 226, 216),
+            alignment: Alignment.center,
+            child: Text(
+              'Total price: ${cartProvider.totalPrice}',
+              style: TextStyle(
+                fontSize: 20,
+                color: const Color.fromARGB(255, 255, 98, 7),
               ),
             ),
-TextButton(
-  onPressed: , 
-child: Text('checkout')),
-            Text(
-              'Total price:${cartProvider.totalPrice}',
-              style: TextStyle(fontSize: 20, color: const Color.fromARGB(255, 255, 98, 7)),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
-      bottomNavigationBar: MainBottomNavigationBar(currentIndex: 2),
+      bottomNavigationBar: MainBottomNavigationBar(currentIndex: 1),
     );
   }
 }
