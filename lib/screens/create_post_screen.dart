@@ -94,7 +94,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                     return null;
                   },
                   decoration: InputDecoration(
-                    labelText: 'add a Price',
+                    labelText: 'add a Price in dollers',
                     labelStyle: TextStyle(color: Colors.grey),
                     border: OutlineInputBorder(),
                     enabledBorder: OutlineInputBorder(

@@ -252,29 +252,49 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
                 ),
               SizedBox(height: 10),
-              GridView.builder(
-                shrinkWrap: true,
-                physics:
-                    const NeverScrollableScrollPhysics(), // لمنع تعارض السكرول
-                itemCount: provider.artworks.length,
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 3, //عدد الشبكه
-                  childAspectRatio: 1,
-                  mainAxisSpacing: 3,
-                  crossAxisSpacing: 3,
-                ),
-                itemBuilder: (context, index) {
-                  final post = provider.artworks[index];
-                  return GestureDetector(
-                    onTap: () {
-                      Navigator.pushNamed(context, '/Product', arguments: post);
-                    },
-                    child: ClipRRect(
-                      child: Image.network(post.imageUrl, fit: BoxFit.cover),
+              provider.artworks.isEmpty
+                  ? Column(
+                      children: [
+                        const SizedBox(height: 80),
+                        const Center(
+                          child: Text(
+                            'post your artworks',
+                            style: TextStyle(fontSize: 16, color: Colors.grey),
+                          ),
+                        ),
+                      ],
+                    )
+                  : GridView.builder(
+                      shrinkWrap: true,
+                      physics:
+                          const NeverScrollableScrollPhysics(), // لمنع تعارض السكرول
+                      itemCount: provider.artworks.length,
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 3, //عدد الشبكه
+                            childAspectRatio: 1,
+                            mainAxisSpacing: 3,
+                            crossAxisSpacing: 3,
+                          ),
+                      itemBuilder: (context, index) {
+                        final post = provider.artworks[index];
+                        return GestureDetector(
+                          onTap: () {
+                            Navigator.pushNamed(
+                              context,
+                              '/Product',
+                              arguments: post,
+                            );
+                          },
+                          child: ClipRRect(
+                            child: Image.network(
+                              post.imageUrl,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        );
+                      },
                     ),
-                  );
-                },
-              ),
             ],
           ),
         ),

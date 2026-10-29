@@ -1,5 +1,4 @@
 import 'package:art_marketplace/providers/search_provider.dart';
-import 'package:art_marketplace/widgets/UserSearchCard,.dart';
 import 'package:art_marketplace/widgets/post_card.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -55,6 +54,8 @@ class _SearchScreenState extends State<SearchScreen> {
                 onFieldSubmitted: searchProvider.performsearch,
               ),
               TabBar(
+                indicatorColor: Colors.deepPurpleAccent,
+                labelColor: Colors.deepPurpleAccent,
                 tabs: [
                   Tab(text: 'artworks'),
                   Tab(text: 'users'),
@@ -112,7 +113,37 @@ class _SearchScreenState extends State<SearchScreen> {
                         itemCount: searchProvider.usresFuture!.length,
                         itemBuilder: (context, index) {
                           final user = searchProvider.usresFuture![index];
-                          return userSearchCard(appUser: user);
+                          return ListTile(
+                            minTileHeight: 80,
+                            leading: CircleAvatar(
+                              radius: 40,
+                              backgroundColor: Colors.white,
+                              backgroundImage: user.profilePicture.isNotEmpty
+                                  ? NetworkImage(user.profilePicture)
+                                  : const AssetImage(
+                                      'assets/images/default_avatar.png',
+                                    ),
+                            ),
+                            //networkImage()+assetImage >>ImageProvider
+                            //image.network+image.assets>> widgets of image type
+                            title: Text(
+                              user.username,
+                              style: TextStyle(fontSize: 16),
+                            ),
+
+                            titleTextStyle: TextStyle(
+                              fontSize: 16,
+                              color: const Color.fromARGB(255, 2, 1, 5),
+                            ),
+                            trailing: Text('trailing'),
+                            onTap: () {
+                              Navigator.pushNamed(
+                                context,
+                                '/Profile',
+                                arguments: user.id,
+                              );
+                            },
+                          );
                         },
                       ),
                   ],
