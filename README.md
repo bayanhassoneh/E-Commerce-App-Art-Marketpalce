@@ -24,12 +24,14 @@ the Marketplace is designed to bridge the gap between local artists and art enth
 * **Mixed-Media Showcase:** Support for various art forms (visual tributes, posters, sculptures).
 * **Secure Authentication:** Managed via Supabase Auth.
 * **Robust Backend:** Utilizing SQL triggers, Row Level Security (RLS), and optimized database schemas.
+* **Dark Mode:** Supports light and dark themes, with user preferences persisted locally using SharedPreferences.
 ## Planned / Upcoming
 * **Stripe payment integration**
 ## 🛠️ Tech Stack
 * **Frontend:** Flutter (Dart)
 * **Backend:** Supabase (PostgreSQL-manual SQL scripts)
 * **State Management:** (provider)
+* **Local Storage:** SharedPreferences for persistent theme preferences.
 * **Database Logic:** Custom SQL Triggers & RLS Policies.
 * **App Launcher Icon:** Managed via `flutter_launcher_icons`
 
