@@ -40,6 +40,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     }
     final profile = provider.profile;
     final date = DateTime.parse(profile!.joinedDate);
+
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(44.0), // الارتفاع القياسي لآيفون
@@ -59,11 +60,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 : null,
             middle: Text(
               provider.profile?.username ?? '',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 20,
-                color: const Color.fromARGB(115, 5, 5, 5),
-              ),
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
             ),
           ),
         ),

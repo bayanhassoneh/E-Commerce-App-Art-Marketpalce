@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:art_marketplace/providers/auth_provider.dart';
 import 'package:provider/provider.dart';
@@ -69,24 +70,37 @@ class AppDrawer extends StatelessWidget {
                         child: const Text(
                           "Cancel",
                           style: TextStyle(
-                            color: const Color.fromARGB(255, 90, 68, 255),
+                            color: Color.fromARGB(255, 48, 51, 227),
+                            fontSize: 17,
                           ),
                         ),
                       ),
 
                       TextButton(
                         onPressed: () async {
+                          showDialog(
+                            context: context,
+                            barrierDismissible: false,
+                            builder: (context) => const Center(
+                              child: CircularProgressIndicator(
+                                color: Colors.grey,
+                              ),
+                            ),
+                          );
                           await context.read<AuthProvider>().signOut();
                           if (context.mounted) {
                             Navigator.pop(context);
-                            //بنتأكد إن الصفحة/الـ Widget لسه موجودة، وبس إذا موجودة بنعمل pop.
-                            //widget means AlertDialog
+                            Navigator.of(context).pushNamedAndRemoveUntil(
+                              '/',
+                              (Route<dynamic> rout) => false,
+                            );
                           }
                         },
                         child: const Text(
                           "logout",
                           style: TextStyle(
-                            color: const Color.fromARGB(255, 90, 68, 255),
+                            color: Color.fromARGB(255, 48, 51, 227),
+                            fontSize: 17,
                           ),
                         ),
                       ),

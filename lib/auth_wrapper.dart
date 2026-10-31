@@ -60,6 +60,8 @@ class _AuthWrapperState extends State<AuthWrapper> {
           MaterialPageRoute(
             builder: (_) => const SetPasswordScreen(title: 'set password'),
           ),
+
+          ///ارجعييييييييييييييييييييييييييييييييييييييي
         );
         return;
       }
@@ -125,8 +127,10 @@ class _AuthWrapperState extends State<AuthWrapper> {
       if (_needsUsername == true) {
         return const CompleteProfileScreen();
       }
+
       return const HomePage();
     } else {
+      print('returning signin screen');
       return const SignInScreen();
     }
   }

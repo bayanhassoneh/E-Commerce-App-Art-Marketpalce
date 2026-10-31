@@ -22,11 +22,7 @@ class _CartScreenState extends State<CartScreen> {
         child: CupertinoNavigationBar(
           middle: Text(
             'cart',
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 20,
-              color: const Color.fromARGB(115, 5, 5, 5),
-            ),
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
           ),
         ),
       ),

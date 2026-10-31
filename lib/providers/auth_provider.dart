@@ -160,8 +160,10 @@ class AuthProvider extends ChangeNotifier {
   Future<void> signOut() async {
     _isLoading = true;
     notifyListeners();
+    print('signout starts');
     await _authService.signOut();
     _isLoading = false;
+    print('signed out successfuly');
     notifyListeners();
   }
 

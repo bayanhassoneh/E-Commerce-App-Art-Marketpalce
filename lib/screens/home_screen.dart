@@ -68,67 +68,67 @@ class _HomePageState extends State<HomePage> {
           automaticallyImplyLeading: false,
         ),
       ),
+    
+            body: Column(
+              children: [
+                Padding(
+                  padding: EdgeInsets.all(20),
+                  child: TextFormField(
+                    readOnly: true,
+                    // showCursor: false,
+                    canRequestFocus: false,
+                    controller: _searchEditingController,
+                    // validator:(value){
 
-      body: Column(
-        children: [
-          Padding(
-            padding: EdgeInsets.all(20),
-            child: TextFormField(
-              readOnly: true,
-              // showCursor: false,
-              canRequestFocus: false,
-              controller: _searchEditingController,
-              // validator:(value){
-
-              // } ,
-              decoration: InputDecoration(
-                labelText: 'search artworks or artists..',
-                labelStyle: TextStyle(color: Colors.grey),
-                prefixIcon: Icon(Icons.search),
-                border: OutlineInputBorder(),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(25),
-                  borderSide: BorderSide(color: Colors.grey),
-                ),
-              ),
-              onTap: () {
-                Navigator.pushNamed(context, '/search');
-              },
-            ),
-          ),
-          Consumer<PostProvider>(
-            builder: (context, provider, child) {
-              if (provider.isLoading) {
-                return const Center(child: CircularProgressIndicator());
-              }
-
-              if (provider.posts.isEmpty) {
-                return const Center(child: Text("No posts yet"));
-              }
-
-              return Expanded(
-                child: GridView.builder(
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    crossAxisSpacing: 5,
-                    //مسافه افقيه
-                    //mainAxisSpacing: 5,
-                    //مسافه عاموديه
-                    childAspectRatio: 0.7,
+                    // } ,
+                    decoration: InputDecoration(
+                      labelText: 'search artworks or artists..',
+                      labelStyle: TextStyle(color: Colors.grey),
+                      prefixIcon: Icon(Icons.search),
+                      border: OutlineInputBorder(),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(25),
+                        borderSide: BorderSide(color: Colors.grey),
+                      ),
+                    ),
+                    onTap: () {
+                      Navigator.pushNamed(context, '/search');
+                    },
                   ),
-                  itemCount: provider.posts.length,
-                  itemBuilder: (context, index) {
-                    final artwork = provider.posts[index];
-                    return PostCard(post: artwork);
+                ),
+                Consumer<PostProvider>(
+                  builder: (context, provider, child) {
+                    if (provider.isLoading) {
+                      return const Center(child: CircularProgressIndicator());
+                    }
+
+                    if (provider.posts.isEmpty) {
+                      return const Center(child: Text("No posts yet"));
+                    }
+
+                    return Expanded(
+                      child: GridView.builder(
+                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          crossAxisSpacing: 5,
+                          //مسافه افقيه
+                          //mainAxisSpacing: 5,
+                          //مسافه عاموديه
+                          childAspectRatio: 0.7,
+                        ),
+                        itemCount: provider.posts.length,
+                        itemBuilder: (context, index) {
+                          final artwork = provider.posts[index];
+                          return PostCard(post: artwork);
+                        },
+                      ),
+                    );
                   },
                 ),
-              );
-            },
-          ),
-        ],
-      ),
+              ],
+            ),
 
-      bottomNavigationBar: MainBottomNavigationBar(currentIndex: 0),
+            bottomNavigationBar: MainBottomNavigationBar(currentIndex: 0),
     );
   }
 }

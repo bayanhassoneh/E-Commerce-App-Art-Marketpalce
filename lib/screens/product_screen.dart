@@ -1,3 +1,4 @@
+import 'package:art_marketplace/providers/auth_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:art_marketplace/models/post.dart';
 import 'package:intl/intl.dart';
@@ -17,7 +18,9 @@ class _ProductScreenState extends State<ProductScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final currentUser = context.read<AuthProvider>().currentUserId;
     final post = ModalRoute.of(context)!.settings.arguments as Post;
+    final isMyProfile = currentUser == post.artistId;
     final cartProvider = context.watch<CartProvider>();
     bool added = cartProvider.isIncart(post);
     final date = DateTime.parse(post.createdAt);
@@ -50,37 +53,39 @@ class _ProductScreenState extends State<ProductScreen> {
                     ),
                   ),
                   SizedBox(width: 140),
-                  Align(
-                    alignment: Alignment.center,
-                    child: OutlinedButton(
-                      onPressed: () {
-                        added
-                            ? cartProvider.removeFromCart(post)
-                            : cartProvider.addToCart(post);
-                      },
-                      child: added
-                          ? Row(
-                              children: [
-                                Text(
-                                  "Added",
-                                  style: TextStyle(color: Colors.green),
-                                ),
-                                Icon(
-                                  Icons.check,
-                                  color: Colors.green,
-                                  size: 14,
-                                ),
-                              ],
-                            )
-                          : Text(
-                              'Add to cart',
-                              style: TextStyle(
-                                fontSize: 15,
-                                color: Color.fromARGB(255, 39, 39, 39),
-                              ),
-                            ),
-                    ),
-                  ),
+                  !isMyProfile
+                      ? Align(
+                          alignment: Alignment.center,
+                          child: OutlinedButton(
+                            onPressed: () {
+                              added
+                                  ? cartProvider.removeFromCart(post)
+                                  : cartProvider.addToCart(post);
+                            },
+                            child: added
+                                ? Row(
+                                    children: [
+                                      Text(
+                                        "Added",
+                                        style: TextStyle(color: Colors.green),
+                                      ),
+                                      Icon(
+                                        Icons.check,
+                                        color: Colors.green,
+                                        size: 14,
+                                      ),
+                                    ],
+                                  )
+                                : Text(
+                                    'Add to cart',
+                                    style: TextStyle(
+                                      fontSize: 15,
+                                      color: Color.fromARGB(255, 39, 39, 39),
+                                    ),
+                                  ),
+                          ),
+                        )
+                      : SizedBox.shrink(),
 
                   IconButton(
                     onPressed: () {
