@@ -1,5 +1,7 @@
+import 'package:art_marketplace/providers/cart_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:art_marketplace/models/post.dart';
+import 'package:provider/provider.dart';
 
 class CartCard extends StatelessWidget {
   final Post post;
@@ -14,23 +16,23 @@ class CartCard extends StatelessWidget {
       child: Card(
         clipBehavior: Clip.antiAlias,
         //لقص اللي بطلع عن زوايا الريديوس
-        elevation: 2,
+        elevation: 0,
         //بروز الكارد عن السطح
-        margin: const EdgeInsets.symmetric(vertical: 8),
+        margin: const EdgeInsets.symmetric(vertical: 3, horizontal: 10),
+
         //horizontal: 12,جوانب
         //verticalفوق وتحت
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(1)),
         child: Padding(
           padding: EdgeInsets.all(10),
           child: Row(
             children: [
               ClipRRect(
-                borderRadius: BorderRadius.circular(8),
+                borderRadius: BorderRadius.circular(2),
                 child: Image.network(
                   post.imageUrl,
-                  height: 100,
-                  width: 100,
+                  height: 90,
+                  width: 90,
                   fit: BoxFit.cover,
                 ),
               ),
@@ -42,22 +44,28 @@ class CartCard extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
+                      post.title,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(fontSize: 15),
+                    ),
+                    const SizedBox(height: 15),
+                    Text(
                       "\$${post.price}",
                       style: TextStyle(
-                        fontSize: 14,
+                        fontSize: 17,
                         fontWeight: FontWeight.bold,
                         color: Colors.deepOrange,
                       ),
                     ),
-                    const SizedBox(height: 3),
-                    Text(
-                      post.title,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(fontSize: 12),
-                    ),
                   ],
                 ),
+              ),
+              TextButton(
+                onPressed: () {
+                  context.read<CartProvider>().removeFromCart(post);
+                },
+                child: Icon(Icons.cancel, color: Colors.redAccent, size: 20),
               ),
             ],
           ),

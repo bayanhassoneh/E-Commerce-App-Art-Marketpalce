@@ -35,16 +35,24 @@ class PostProvider extends ChangeNotifier {
 
     if (_selectedImage == null) return false;
 
-    final imageUrl = await _storageService.uploadPost(_selectedImage!);
+    try {
+      final imageUrl = await _storageService.uploadPost(_selectedImage!);
 
-    await _postService.createpost(
-      imageUrl: imageUrl,
-      title: title,
-      price: price,
-      description: description,
-    );
+      await _postService.createpost(
+        imageUrl: imageUrl,
+        title: title,
+        price: price,
+        description: description,
+      );
 
-    return true;
+      return true;
+    } on Exception catch (e) {
+      print("Error creating post: $e");
+      return false;
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
   }
 
   Future<void> fetchFeedPosts() async {

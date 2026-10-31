@@ -63,15 +63,45 @@ class _CartScreenState extends State<CartScreen> {
 
           // child: Text('checkout')),
           Container(
-            height: 70,
+            height: 80,
             width: double.infinity,
-            color: const Color.fromARGB(255, 226, 226, 216),
+
+            // color: Colors.white,
             alignment: Alignment.center,
-            child: Text(
-              'Total price: ${cartProvider.totalPrice}',
-              style: TextStyle(
-                fontSize: 20,
-                color: const Color.fromARGB(255, 255, 98, 7),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Total price: ${cartProvider.totalPrice} \$',
+                    style: TextStyle(
+                      fontSize: 20,
+                      color: const Color.fromARGB(255, 196, 93, 24),
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  // SizedBox(width: 70),
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 50,
+                        vertical: 10,
+                      ),
+                      backgroundColor: Color.fromARGB(234, 88, 46, 241),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(0),
+                      ),
+                    ),
+                    child: Text(
+                      'Checkout',
+                      style: TextStyle(fontSize: 20, color: Colors.white),
+                    ),
+                    onPressed: () {
+                      print('Button Pressed!');
+                    },
+                  ),
+                ],
               ),
             ),
           ),

@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:art_marketplace/models/post.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class CartProvider extends ChangeNotifier {
   List<Post> cartItems = [];
 
-  void addToCart(Post item) {
+  void addToCart(Post item) async {
     cartItems.add(item);
     notifyListeners();
   }
