@@ -1,3 +1,5 @@
+import 'package:art_marketplace/models/cartItemModel.dart';
+
 import 'app_user.dart';
 
 class Post {
@@ -31,6 +33,18 @@ class Post {
       profile: map['profiles'] != null
           ? AppUser.fromMap(map['profiles'])
           : null,
+    );
+  }
+  factory Post.fromCartItem(Cartitemmodel cartItem) {
+    return Post(
+      id: cartItem.id,
+      artistId: cartItem.artistId,
+      title: cartItem.title,
+      price: cartItem.price,
+      description: cartItem.description,
+      imageUrl: cartItem.imageUrl,
+      createdAt: cartItem.createdAt,
+      profile: cartItem.profile,
     );
   }
 }

@@ -21,7 +21,7 @@ class cartservice {
         .from('cart_items')
         .select('''*, artworks(*)''')
         .eq('user_is', userid)
-        .order('created_at', ascending: false);
+        .order('created_at', ascending: false); //من الاحدث للاقدم
     return response.map((item) => Post.fromMap(item)).toList();
   }
 }

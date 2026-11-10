@@ -57,11 +57,7 @@ class _CartScreenState extends State<CartScreen> {
                     //بتمنع لسكرول لمنع التضارب
                     itemCount: cartProvider.cartItems.length,
                     itemBuilder: (context, index) {
-                      final reversedIndex =
-                          cartProvider.cartItems.length - 1 - index;
-                      return CartCard(
-                        post: cartProvider.cartItems[reversedIndex],
-                      );
+                      return CartCard(post: cartProvider.cartItems[index]);
                     },
                   ),
           ),
