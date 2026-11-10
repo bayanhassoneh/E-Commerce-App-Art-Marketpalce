@@ -20,7 +20,7 @@ class _ProductScreenState extends State<ProductScreen> {
   Widget build(BuildContext context) {
     final currentUser = context.read<AuthProvider>().currentUserId;
     final post = ModalRoute.of(context)!.settings.arguments as Post;
-    final isMyProfile = currentUser == post.artistId;
+    final isMyPost = currentUser == post.artistId;
     final cartProvider = context.watch<CartProvider>();
     bool added = cartProvider.isIncart(post);
     final date = DateTime.parse(post.createdAt);
@@ -53,7 +53,7 @@ class _ProductScreenState extends State<ProductScreen> {
                     ),
                   ),
                   SizedBox(width: 140),
-                  !isMyProfile
+                  !isMyPost
                       ? Align(
                           alignment: Alignment.center,
                           child: OutlinedButton(

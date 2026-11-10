@@ -90,6 +90,9 @@ class _AuthWrapperState extends State<AuthWrapper> {
   // دالة منفصلة ومحمية بالكامل لجلب حالة الـ username
   Future<void> _fetchProfileStatus(String userId) async {
     try {
+      // التاكد و التعديل بالنسبه لل offline state!!
+      //لان ممكن ما يجيب البيانات بسبب النت فيعمله نل فيطلب يوزر ...
+
       final profile = await _supabase
           .from('profiles')
           .select('user_name')

@@ -14,6 +14,14 @@ class CartScreen extends StatefulWidget {
 
 class _CartScreenState extends State<CartScreen> {
   @override
+  void initStat() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<CartProvider>().fetchCartItems();
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     final cartProvider = context.watch<CartProvider>();
     return Scaffold(
@@ -74,7 +82,7 @@ class _CartScreenState extends State<CartScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'Total price: ${cartProvider.totalPrice} \$',
+                    'Total price:\$${cartProvider.totalPrice.toStringAsFixed(2)}',
                     style: TextStyle(
                       fontSize: 20,
                       color: const Color.fromARGB(255, 196, 93, 24),
