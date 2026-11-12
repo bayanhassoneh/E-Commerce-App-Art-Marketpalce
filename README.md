@@ -17,7 +17,7 @@
 A mobile application built with **Flutter** and **Supabase** that allows artists to showcase and sell their mixed-media works, sculptures, and paintings.
 
 ## Overview
-the Marketplace is designed to bridge the gap between local artists and art enthusiasts. It provides a clean, user-friendly interface for browsing unique artworks while ensuring secure data management and real-time updates.
+The Marketplace is designed to bridge the gap between local artists and art enthusiasts. It provides a clean, user-friendly interface for browsing unique artworks while ensuring secure data management and real-time updates.
 
 ## ✨ Features
 * **Artist Profiles:** Dedicated spaces for artists to manage their portfolio.
@@ -25,13 +25,15 @@ the Marketplace is designed to bridge the gap between local artists and art enth
 * **Secure Authentication:** Managed via Supabase Auth.
 * **Robust Backend:** Utilizing SQL triggers, Row Level Security (RLS), and optimized database schemas.
 * **Dark Mode:** Supports light and dark themes, with user preferences persisted locally using SharedPreferences.
+* **Online-First with Offline Fallback:** Caches critical user data (such as cart items) locally using **Isar Database**, ensuring seamless browsing and error resilience during network interruptions.
 ## Planned / Upcoming
-* **Stripe payment integration**
+* **Unit & Widget Testing:** Comprehensive test coverage for data services and state providers.
+* **Stripe Payment Integration:** Secure checkout flow for artwork purchases.
 ## 🛠️ Tech Stack
 * **Frontend:** Flutter (Dart)
 * **Backend:** Supabase (PostgreSQL-manual SQL scripts)
 * **State Management:** (provider)
-* **Local Storage:** SharedPreferences for persistent theme preferences.
+* **Local Storage:** Isar Database (for structured data caching) & SharedPreferences (for persistent theme preferences).
 * **Database Logic:** Custom SQL Triggers & RLS Policies.
 * **App Launcher Icon:** Managed via `flutter_launcher_icons`
 
@@ -60,8 +62,9 @@ As an aspiring Software Engineer, I focused on:
 * Implementing **Clean Code** principles and reusable UI components.
 * Designing a secure database schema with **PostgreSQL** scripts via the SQL Editor. 
 * Implemented strict **Row Level Security (RLS)** policies to ensure data privacy at the database level.
-* * Developed custom **SQL Functions and Triggers** to automate complex data workflows and maintain integrity.
+* Developed custom **SQL Functions and Triggers** to automate complex data workflows and maintain integrity.
 * Managing complex backend logic directly in the database to ensure data integrity.
+* **Decoupled local caching and services via Constructor Injection** to keep providers focused on UI state and simplify unit testing.
 
 
 ## 📂 Folder Structure
@@ -79,7 +82,7 @@ art_marketplace/
 ├── assets/
 ├── database/
 │   ├── triggers/
-│   ├── indexes,sql
+│   ├── indexes.sql
 │   ├── security.sql
 │   └── tables.sql
 │

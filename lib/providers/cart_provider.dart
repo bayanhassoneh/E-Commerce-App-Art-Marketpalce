@@ -59,8 +59,7 @@ class CartProvider extends ChangeNotifier {
     } on Exception catch (e) {
       try {
         cartItems = await _service.readLocalItems();
-        errorMessage =
-            'an error acured.'; ////////////////////////////////////////////////////
+        errorMessage = 'an error accrued.';
       } on Exception catch (e) {
         errorMessage = 'Failed to load latest updates.';
       }
