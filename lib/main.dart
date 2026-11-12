@@ -5,6 +5,7 @@ import 'package:art_marketplace/screens/product_screen.dart';
 import 'package:art_marketplace/screens/profile_screen.dart';
 import 'package:art_marketplace/screens/forgot_password_screen.dart';
 import 'package:art_marketplace/screens/reset_password_screen.dart';
+import 'package:art_marketplace/services/Isar_service.dart';
 import 'package:flutter/material.dart';
 // import 'package:flutter/cupertino.dart';
 //import 'package:flutter/foundation.dart';
@@ -25,6 +26,7 @@ import 'package:art_marketplace/providers/post_provider.dart';
 import 'package:art_marketplace/providers/profile_provider.dart';
 import 'package:art_marketplace/screens/create_post_screen.dart';
 import 'package:art_marketplace/screens/search_screen.dart';
+import 'package:art_marketplace/services/cart_service.dart';
 
 // void main() {
 //   debugDefaultTargetPlatformOverride = TargetPlatform.iOS;
@@ -44,6 +46,11 @@ void main() async {
     print("Supabase Initialization Error: $e");
     return;
   }
+  try {
+    await IsarService.initIsar();
+  } catch (e) {
+    print("isar Initialization Error: $e");
+  }
 
   runApp(
     MultiProvider(
@@ -53,7 +60,9 @@ void main() async {
         //.. >>casecade operator
         ChangeNotifierProvider(create: (_) => PostProvider()),
         ChangeNotifierProvider(create: (_) => ProfileProvider()),
-        ChangeNotifierProvider(create: (_) => CartProvider()),
+        ChangeNotifierProvider(
+          create: (_) => CartProvider(cartservice(IsarService.isar)),
+        ),
         ChangeNotifierProvider(create: (_) => SearchProvider()),
       ],
       child: MyApp(),
