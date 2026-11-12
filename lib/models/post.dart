@@ -44,7 +44,17 @@ class Post {
       description: cartItem.description,
       imageUrl: cartItem.imageUrl,
       createdAt: cartItem.createdAt,
-      profile: cartItem.profile,
+      profile: AppUser(
+        id: cartItem.artistId,
+        username: cartItem.username ?? '',
+        bio: '',
+        profilePicture: cartItem.userProfilePicture ?? 'Unknown User',
+        socialLink: '',
+        location: '',
+        joinedDate: '',
+        followers: 0,
+        following: 0,
+      ),
     );
   }
 }

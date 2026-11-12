@@ -1,6 +1,5 @@
 import 'package:isar/isar.dart';
 import 'post.dart';
-import 'app_user.dart';
 part 'cartItemModel.g.dart';
 //نفس اسم الملف
 
@@ -15,7 +14,8 @@ class Cartitemmodel {
   late String description;
   late String imageUrl;
   late String createdAt;
-  late AppUser? profile;
+  late String? username;
+  late String? userProfilePicture;
   Cartitemmodel({
     required this.id,
     required this.artistId,
@@ -24,7 +24,8 @@ class Cartitemmodel {
     required this.description,
     required this.imageUrl,
     required this.createdAt,
-    required this.profile,
+    required this.username,
+    required this.userProfilePicture,
   });
   factory Cartitemmodel.fromPost(Post post) {
     return Cartitemmodel(
@@ -35,7 +36,8 @@ class Cartitemmodel {
       description: post.description,
       imageUrl: post.imageUrl,
       createdAt: post.createdAt,
-      profile: post.profile,
+      username: post.profile?.username,
+      userProfilePicture: post.profile?.profilePicture,
     );
   }
 }

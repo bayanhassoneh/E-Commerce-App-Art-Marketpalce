@@ -22,24 +22,44 @@ const CartitemmodelSchema = CollectionSchema(
       name: r'artistId',
       type: IsarType.string,
     ),
-    r'id': PropertySchema(
+    r'createdAt': PropertySchema(
       id: 1,
+      name: r'createdAt',
+      type: IsarType.string,
+    ),
+    r'description': PropertySchema(
+      id: 2,
+      name: r'description',
+      type: IsarType.string,
+    ),
+    r'id': PropertySchema(
+      id: 3,
       name: r'id',
       type: IsarType.string,
     ),
     r'imageUrl': PropertySchema(
-      id: 2,
+      id: 4,
       name: r'imageUrl',
       type: IsarType.string,
     ),
     r'price': PropertySchema(
-      id: 3,
+      id: 5,
       name: r'price',
       type: IsarType.double,
     ),
     r'title': PropertySchema(
-      id: 4,
+      id: 6,
       name: r'title',
+      type: IsarType.string,
+    ),
+    r'userProfilePicture': PropertySchema(
+      id: 7,
+      name: r'userProfilePicture',
+      type: IsarType.string,
+    ),
+    r'username': PropertySchema(
+      id: 8,
+      name: r'username',
       type: IsarType.string,
     )
   },
@@ -78,9 +98,23 @@ int _cartitemmodelEstimateSize(
 ) {
   var bytesCount = offsets.last;
   bytesCount += 3 + object.artistId.length * 3;
+  bytesCount += 3 + object.createdAt.length * 3;
+  bytesCount += 3 + object.description.length * 3;
   bytesCount += 3 + object.id.length * 3;
   bytesCount += 3 + object.imageUrl.length * 3;
   bytesCount += 3 + object.title.length * 3;
+  {
+    final value = object.userProfilePicture;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
+  {
+    final value = object.username;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
   return bytesCount;
 }
 
@@ -91,10 +125,14 @@ void _cartitemmodelSerialize(
   Map<Type, List<int>> allOffsets,
 ) {
   writer.writeString(offsets[0], object.artistId);
-  writer.writeString(offsets[1], object.id);
-  writer.writeString(offsets[2], object.imageUrl);
-  writer.writeDouble(offsets[3], object.price);
-  writer.writeString(offsets[4], object.title);
+  writer.writeString(offsets[1], object.createdAt);
+  writer.writeString(offsets[2], object.description);
+  writer.writeString(offsets[3], object.id);
+  writer.writeString(offsets[4], object.imageUrl);
+  writer.writeDouble(offsets[5], object.price);
+  writer.writeString(offsets[6], object.title);
+  writer.writeString(offsets[7], object.userProfilePicture);
+  writer.writeString(offsets[8], object.username);
 }
 
 Cartitemmodel _cartitemmodelDeserialize(
@@ -105,10 +143,14 @@ Cartitemmodel _cartitemmodelDeserialize(
 ) {
   final object = Cartitemmodel(
     artistId: reader.readString(offsets[0]),
-    id: reader.readString(offsets[1]),
-    imageUrl: reader.readString(offsets[2]),
-    price: reader.readDouble(offsets[3]),
-    title: reader.readString(offsets[4]),
+    createdAt: reader.readString(offsets[1]),
+    description: reader.readString(offsets[2]),
+    id: reader.readString(offsets[3]),
+    imageUrl: reader.readString(offsets[4]),
+    price: reader.readDouble(offsets[5]),
+    title: reader.readString(offsets[6]),
+    userProfilePicture: reader.readStringOrNull(offsets[7]),
+    username: reader.readStringOrNull(offsets[8]),
   );
   object.isarId = id;
   return object;
@@ -128,9 +170,17 @@ P _cartitemmodelDeserializeProp<P>(
     case 2:
       return (reader.readString(offset)) as P;
     case 3:
-      return (reader.readDouble(offset)) as P;
+      return (reader.readString(offset)) as P;
     case 4:
       return (reader.readString(offset)) as P;
+    case 5:
+      return (reader.readDouble(offset)) as P;
+    case 6:
+      return (reader.readString(offset)) as P;
+    case 7:
+      return (reader.readStringOrNull(offset)) as P;
+    case 8:
+      return (reader.readStringOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
   }
@@ -462,6 +512,278 @@ extension CartitemmodelQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         property: r'artistId',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<Cartitemmodel, Cartitemmodel, QAfterFilterCondition>
+      createdAtEqualTo(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'createdAt',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Cartitemmodel, Cartitemmodel, QAfterFilterCondition>
+      createdAtGreaterThan(
+    String value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'createdAt',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Cartitemmodel, Cartitemmodel, QAfterFilterCondition>
+      createdAtLessThan(
+    String value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'createdAt',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Cartitemmodel, Cartitemmodel, QAfterFilterCondition>
+      createdAtBetween(
+    String lower,
+    String upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'createdAt',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Cartitemmodel, Cartitemmodel, QAfterFilterCondition>
+      createdAtStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'createdAt',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Cartitemmodel, Cartitemmodel, QAfterFilterCondition>
+      createdAtEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'createdAt',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Cartitemmodel, Cartitemmodel, QAfterFilterCondition>
+      createdAtContains(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'createdAt',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Cartitemmodel, Cartitemmodel, QAfterFilterCondition>
+      createdAtMatches(String pattern, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'createdAt',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Cartitemmodel, Cartitemmodel, QAfterFilterCondition>
+      createdAtIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'createdAt',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<Cartitemmodel, Cartitemmodel, QAfterFilterCondition>
+      createdAtIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'createdAt',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<Cartitemmodel, Cartitemmodel, QAfterFilterCondition>
+      descriptionEqualTo(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'description',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Cartitemmodel, Cartitemmodel, QAfterFilterCondition>
+      descriptionGreaterThan(
+    String value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'description',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Cartitemmodel, Cartitemmodel, QAfterFilterCondition>
+      descriptionLessThan(
+    String value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'description',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Cartitemmodel, Cartitemmodel, QAfterFilterCondition>
+      descriptionBetween(
+    String lower,
+    String upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'description',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Cartitemmodel, Cartitemmodel, QAfterFilterCondition>
+      descriptionStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'description',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Cartitemmodel, Cartitemmodel, QAfterFilterCondition>
+      descriptionEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'description',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Cartitemmodel, Cartitemmodel, QAfterFilterCondition>
+      descriptionContains(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'description',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Cartitemmodel, Cartitemmodel, QAfterFilterCondition>
+      descriptionMatches(String pattern, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'description',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Cartitemmodel, Cartitemmodel, QAfterFilterCondition>
+      descriptionIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'description',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<Cartitemmodel, Cartitemmodel, QAfterFilterCondition>
+      descriptionIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'description',
         value: '',
       ));
     });
@@ -994,6 +1316,314 @@ extension CartitemmodelQueryFilter
       ));
     });
   }
+
+  QueryBuilder<Cartitemmodel, Cartitemmodel, QAfterFilterCondition>
+      userProfilePictureIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'userProfilePicture',
+      ));
+    });
+  }
+
+  QueryBuilder<Cartitemmodel, Cartitemmodel, QAfterFilterCondition>
+      userProfilePictureIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'userProfilePicture',
+      ));
+    });
+  }
+
+  QueryBuilder<Cartitemmodel, Cartitemmodel, QAfterFilterCondition>
+      userProfilePictureEqualTo(
+    String? value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'userProfilePicture',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Cartitemmodel, Cartitemmodel, QAfterFilterCondition>
+      userProfilePictureGreaterThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'userProfilePicture',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Cartitemmodel, Cartitemmodel, QAfterFilterCondition>
+      userProfilePictureLessThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'userProfilePicture',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Cartitemmodel, Cartitemmodel, QAfterFilterCondition>
+      userProfilePictureBetween(
+    String? lower,
+    String? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'userProfilePicture',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Cartitemmodel, Cartitemmodel, QAfterFilterCondition>
+      userProfilePictureStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'userProfilePicture',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Cartitemmodel, Cartitemmodel, QAfterFilterCondition>
+      userProfilePictureEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'userProfilePicture',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Cartitemmodel, Cartitemmodel, QAfterFilterCondition>
+      userProfilePictureContains(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'userProfilePicture',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Cartitemmodel, Cartitemmodel, QAfterFilterCondition>
+      userProfilePictureMatches(String pattern, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'userProfilePicture',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Cartitemmodel, Cartitemmodel, QAfterFilterCondition>
+      userProfilePictureIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'userProfilePicture',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<Cartitemmodel, Cartitemmodel, QAfterFilterCondition>
+      userProfilePictureIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'userProfilePicture',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<Cartitemmodel, Cartitemmodel, QAfterFilterCondition>
+      usernameIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'username',
+      ));
+    });
+  }
+
+  QueryBuilder<Cartitemmodel, Cartitemmodel, QAfterFilterCondition>
+      usernameIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'username',
+      ));
+    });
+  }
+
+  QueryBuilder<Cartitemmodel, Cartitemmodel, QAfterFilterCondition>
+      usernameEqualTo(
+    String? value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'username',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Cartitemmodel, Cartitemmodel, QAfterFilterCondition>
+      usernameGreaterThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'username',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Cartitemmodel, Cartitemmodel, QAfterFilterCondition>
+      usernameLessThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'username',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Cartitemmodel, Cartitemmodel, QAfterFilterCondition>
+      usernameBetween(
+    String? lower,
+    String? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'username',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Cartitemmodel, Cartitemmodel, QAfterFilterCondition>
+      usernameStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'username',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Cartitemmodel, Cartitemmodel, QAfterFilterCondition>
+      usernameEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'username',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Cartitemmodel, Cartitemmodel, QAfterFilterCondition>
+      usernameContains(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'username',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Cartitemmodel, Cartitemmodel, QAfterFilterCondition>
+      usernameMatches(String pattern, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'username',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Cartitemmodel, Cartitemmodel, QAfterFilterCondition>
+      usernameIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'username',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<Cartitemmodel, Cartitemmodel, QAfterFilterCondition>
+      usernameIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'username',
+        value: '',
+      ));
+    });
+  }
 }
 
 extension CartitemmodelQueryObject
@@ -1014,6 +1644,32 @@ extension CartitemmodelQuerySortBy
       sortByArtistIdDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'artistId', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Cartitemmodel, Cartitemmodel, QAfterSortBy> sortByCreatedAt() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'createdAt', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Cartitemmodel, Cartitemmodel, QAfterSortBy>
+      sortByCreatedAtDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'createdAt', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Cartitemmodel, Cartitemmodel, QAfterSortBy> sortByDescription() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'description', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Cartitemmodel, Cartitemmodel, QAfterSortBy>
+      sortByDescriptionDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'description', Sort.desc);
     });
   }
 
@@ -1065,6 +1721,33 @@ extension CartitemmodelQuerySortBy
       return query.addSortBy(r'title', Sort.desc);
     });
   }
+
+  QueryBuilder<Cartitemmodel, Cartitemmodel, QAfterSortBy>
+      sortByUserProfilePicture() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'userProfilePicture', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Cartitemmodel, Cartitemmodel, QAfterSortBy>
+      sortByUserProfilePictureDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'userProfilePicture', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Cartitemmodel, Cartitemmodel, QAfterSortBy> sortByUsername() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'username', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Cartitemmodel, Cartitemmodel, QAfterSortBy>
+      sortByUsernameDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'username', Sort.desc);
+    });
+  }
 }
 
 extension CartitemmodelQuerySortThenBy
@@ -1079,6 +1762,32 @@ extension CartitemmodelQuerySortThenBy
       thenByArtistIdDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'artistId', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Cartitemmodel, Cartitemmodel, QAfterSortBy> thenByCreatedAt() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'createdAt', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Cartitemmodel, Cartitemmodel, QAfterSortBy>
+      thenByCreatedAtDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'createdAt', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Cartitemmodel, Cartitemmodel, QAfterSortBy> thenByDescription() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'description', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Cartitemmodel, Cartitemmodel, QAfterSortBy>
+      thenByDescriptionDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'description', Sort.desc);
     });
   }
 
@@ -1142,6 +1851,33 @@ extension CartitemmodelQuerySortThenBy
       return query.addSortBy(r'title', Sort.desc);
     });
   }
+
+  QueryBuilder<Cartitemmodel, Cartitemmodel, QAfterSortBy>
+      thenByUserProfilePicture() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'userProfilePicture', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Cartitemmodel, Cartitemmodel, QAfterSortBy>
+      thenByUserProfilePictureDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'userProfilePicture', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Cartitemmodel, Cartitemmodel, QAfterSortBy> thenByUsername() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'username', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Cartitemmodel, Cartitemmodel, QAfterSortBy>
+      thenByUsernameDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'username', Sort.desc);
+    });
+  }
 }
 
 extension CartitemmodelQueryWhereDistinct
@@ -1150,6 +1886,20 @@ extension CartitemmodelQueryWhereDistinct
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'artistId', caseSensitive: caseSensitive);
+    });
+  }
+
+  QueryBuilder<Cartitemmodel, Cartitemmodel, QDistinct> distinctByCreatedAt(
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'createdAt', caseSensitive: caseSensitive);
+    });
+  }
+
+  QueryBuilder<Cartitemmodel, Cartitemmodel, QDistinct> distinctByDescription(
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'description', caseSensitive: caseSensitive);
     });
   }
 
@@ -1179,6 +1929,21 @@ extension CartitemmodelQueryWhereDistinct
       return query.addDistinctBy(r'title', caseSensitive: caseSensitive);
     });
   }
+
+  QueryBuilder<Cartitemmodel, Cartitemmodel, QDistinct>
+      distinctByUserProfilePicture({bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'userProfilePicture',
+          caseSensitive: caseSensitive);
+    });
+  }
+
+  QueryBuilder<Cartitemmodel, Cartitemmodel, QDistinct> distinctByUsername(
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'username', caseSensitive: caseSensitive);
+    });
+  }
 }
 
 extension CartitemmodelQueryProperty
@@ -1192,6 +1957,18 @@ extension CartitemmodelQueryProperty
   QueryBuilder<Cartitemmodel, String, QQueryOperations> artistIdProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'artistId');
+    });
+  }
+
+  QueryBuilder<Cartitemmodel, String, QQueryOperations> createdAtProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'createdAt');
+    });
+  }
+
+  QueryBuilder<Cartitemmodel, String, QQueryOperations> descriptionProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'description');
     });
   }
 
@@ -1216,6 +1993,19 @@ extension CartitemmodelQueryProperty
   QueryBuilder<Cartitemmodel, String, QQueryOperations> titleProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'title');
+    });
+  }
+
+  QueryBuilder<Cartitemmodel, String?, QQueryOperations>
+      userProfilePictureProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'userProfilePicture');
+    });
+  }
+
+  QueryBuilder<Cartitemmodel, String?, QQueryOperations> usernameProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'username');
     });
   }
 }
