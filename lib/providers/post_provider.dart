@@ -16,6 +16,7 @@ class PostProvider extends ChangeNotifier {
   File? get selectedImage => _selectedImage;
   bool get isLoading => _isLoading;
   List<Post> posts = [];
+  Post? post;
 
   Future<void> pickImage() async {
     File? imageFile = await _imagePickerService.pickImage();
@@ -63,6 +64,27 @@ class PostProvider extends ChangeNotifier {
       posts = await _postService.fetchFeedPosts();
     } catch (e) {
       debugPrint(e.toString());
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
+
+  Future<void> initPost(Post initpost) async {
+    post = initpost;
+    notifyListeners();
+    if (initpost.profile == null) {
+      await getPostInfo(initpost.id);
+    }
+  }
+
+  Future<void> getPostInfo(String id) async {
+    try {
+      _isLoading = true;
+      notifyListeners();
+      post = await _postService.getPostInfo(id);
+    } catch (e) {
+      print('error acurred:$e');
     } finally {
       _isLoading = false;
       notifyListeners();

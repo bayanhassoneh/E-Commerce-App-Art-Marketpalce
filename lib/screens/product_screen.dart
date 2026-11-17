@@ -1,4 +1,5 @@
 import 'package:art_marketplace/providers/auth_provider.dart';
+import 'package:art_marketplace/providers/post_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:art_marketplace/models/post.dart';
 import 'package:intl/intl.dart';
@@ -17,13 +18,33 @@ class _ProductScreenState extends State<ProductScreen> {
   bool added = false;
 
   @override
+  void initState() {
+    super.initState();
+
+    Future.microtask(() {
+      Post initpost = ModalRoute.of(context)!.settings.arguments as Post;
+      context.read<PostProvider>().initPost(initpost);
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     final currentUser = context.read<AuthProvider>().currentUserId;
-    final post = ModalRoute.of(context)!.settings.arguments as Post;
-    final isMyPost = currentUser == post.artistId;
+    final post = context.watch<PostProvider>().post;
+    if (post == null) {
+      return Scaffold(
+        appBar: PreferredSize(
+          preferredSize: const Size.fromHeight(44.0),
+          child: CupertinoNavigationBar(middle: Text('Post')),
+        ),
+        body: const Center(child: CircularProgressIndicator()),
+      );
+    }
+    final isMyPost = currentUser == post!.artistId;
     final cartProvider = context.watch<CartProvider>();
     bool added = cartProvider.isIncart(post);
     final date = DateTime.parse(post.createdAt);
+    if (post.profile == null) {}
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(44.0),
@@ -111,7 +132,7 @@ class _ProductScreenState extends State<ProductScreen> {
               SizedBox(height: 10),
 
               Text(
-                'by ${post.profile?.username} ',
+                'by ${post.profile?.username ?? 'loading..'} ',
                 style: TextStyle(
                   fontSize: 16,
                   color: Color.fromARGB(255, 39, 39, 39),

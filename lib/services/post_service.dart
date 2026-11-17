@@ -22,19 +22,31 @@ class PostService {
   Future<List<Post>> fetchFeedPosts() async {
     final response = await _supabase
         .from('artworks')
-        .select(''' 
+        .select(
+          ''' 
     *,
     profiles( 
     user_name,
     cover_url
     )
-    '''
-//triple-quoted string لما لسترينج على اكتر من سطر 
-//نفس .select('*, profiles(user_name, cover_url)')
-)
+    ''',
+          //triple-quoted string لما لسترينج على اكتر من سطر
+          //نفس .select('*, profiles(user_name, cover_url)')
+        )
         .order('created_at', ascending: false)
         .limit(25);
     return response.map((post) => Post.fromMap(post)).toList();
     //list of map converted to modle
+  }
+
+  Future<Post> getPostInfo(String id) async {
+    final response = await _supabase
+        .from('artworks')
+        .select('*, profiles(user_name)')
+        .eq('id', id)
+        .single();
+    //single عشان سوبابيز ترجعلي ماب بدل ليست
+    return Post.fromMap(response);
+    //عشان احول ماب لموديل
   }
 }
