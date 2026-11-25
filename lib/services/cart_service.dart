@@ -3,16 +3,24 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:art_marketplace/models/cartItemModel.dart';
 import 'package:isar/isar.dart';
 
-class cartservice {
+class CartService {
   late Isar isar;
-  cartservice(this.isar);
-  final SupabaseClient _supabase = Supabase.instance.client;
+  CartService(this.isar);
+  final SupabaseClient _supabase =
+      Supabase.instance.client; //لازم امررها ككونستراكتور عشان التيست لاحقا
+  /////////////////////////////////////////////////////////////////////////////
 
-  Future<void> addToCart({required Post item, required userid}) async {
-    await _supabase.from('cart_items').insert(item.id).eq("user_id", userid);
+  Future<void> addToCart({required Post item, required String userid}) async {
+    await _supabase.from('cart_items').insert({
+      'user_id': userid,
+      'artwork_id': item.id,
+    });
   }
 
-  Future<void> removeFromCart({required Post item, required userid}) async {
+  Future<void> removeFromCart({
+    required Post item,
+    required String userid,
+  }) async {
     await _supabase
         .from('cart_items')
         .delete()
@@ -24,9 +32,13 @@ class cartservice {
     final response = await _supabase
         .from('cart_items')
         .select('''*, artworks(*)''')
-        .eq('user_is', userid)
+        .eq('user_id', userid)
         .order('created_at', ascending: false); //من الاحدث للاقدم
-    return response.map((item) => Post.fromMap(item)).toList();
+
+    return response.map((item) {
+      final posts = item['artworks'] as Map<String, dynamic>;
+      return Post.fromMap(posts);
+    }).toList();
   }
 
   Future<void> saveLocalItems(List<Post> cartItems) async {
@@ -34,7 +46,15 @@ class cartservice {
         .map((post) => Cartitemmodel.fromPost(post))
         .toList();
     await isar.writeTxn(() async {
+      await isar.cartitemmodels.clear();
       await isar.cartitemmodels.putAll(localItems);
+    });
+  }
+
+  Future<void> removeFromCache(Post item) async {
+    final localItem = Cartitemmodel.fromPost(item);
+    await isar.writeTxn(() async {
+      await isar.cartitemmodels.delete(localItem.isarId);
     });
   }
 

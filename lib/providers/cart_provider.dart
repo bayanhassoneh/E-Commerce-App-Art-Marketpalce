@@ -5,21 +5,33 @@ import 'package:art_marketplace/models/post.dart';
 import 'package:art_marketplace/services/cart_service.dart';
 
 class CartProvider extends ChangeNotifier {
-  final cartservice _service;
-  CartProvider(this._service);
+  final CartService _service;
+  final AuthProvider _authProvider;
+  CartProvider(this._service, {AuthProvider? authProvider})
+    : _authProvider = authProvider ?? AuthProvider();
+  //{}=optional/named parameter
+  //البرايفيت فاريابل بقدرش اعمل عليه اكسس جوات الاوبشنال , فبتختلف طريقة كتابته و استقباله
+  //_service > positional parameter
+
   List<Post> cartItems = [];
   List<Cartitemmodel> localItems = [];
-
-  AuthProvider _authProvider = AuthProvider();
   String errorMessage = '';
   bool _isLoading = false;
   bool get isLoading => _isLoading;
+
   Future<void> addToCart(Post item) async {
+    if (_authProvider.currentUserId == null) {
+      cartItems = [];
+      errorMessage = 'Please log in to view your cart.';
+      _isLoading = false;
+      notifyListeners();
+      return;
+    }
     if (!isIncart(item)) {
       try {
         await _service.addToCart(
           item: item,
-          userid: _authProvider.currentUserId,
+          userid: _authProvider.currentUserId!,
         );
         cartItems.add(item);
       } on Exception catch (e) {
@@ -31,12 +43,24 @@ class CartProvider extends ChangeNotifier {
   }
 
   Future<void> removeFromCart(Post item) async {
+    if (_authProvider.currentUserId == null) {
+      cartItems = [];
+      errorMessage = 'Please log in to view your cart.';
+      _isLoading = false;
+      notifyListeners();
+      return;
+    }
     try {
       await _service.removeFromCart(
         item: item,
-        userid: _authProvider.currentUserId,
+        userid: _authProvider.currentUserId!,
       );
-      cartItems.remove(item);
+      cartItems.removeWhere((element) => element.id == item.id);
+      try {
+        await _service.removeFromCache(item);
+      } catch (e) {
+        errorMessage = 'Failed to remove from Cache:$e';
+      }
     } on Exception catch (e) {
       errorMessage = 'failed to remove the item: $e';
     } finally {
@@ -45,6 +69,13 @@ class CartProvider extends ChangeNotifier {
   }
 
   Future<void> fetchCartItems() async {
+    if (_authProvider.currentUserId == null) {
+      cartItems = [];
+      errorMessage = 'Please log in to view your cart.';
+      _isLoading = false;
+      notifyListeners();
+      return;
+    }
     _isLoading = true;
     notifyListeners();
     try {
@@ -59,11 +90,12 @@ class CartProvider extends ChangeNotifier {
     } on Exception catch (e) {
       try {
         cartItems = await _service.readLocalItems();
-        errorMessage = 'an error accrued.';
+        errorMessage = 'an error accrued: $e';
       } on Exception catch (e) {
-        errorMessage = 'Failed to load latest updates.';
+        errorMessage = 'Failed to load latest updates: $e';
       }
     } finally {
+      _isLoading = false;
       notifyListeners();
     }
   }

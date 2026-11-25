@@ -19,7 +19,7 @@ class Post {
     required this.description,
     required this.imageUrl,
     required this.createdAt,
-    required this.profile,
+    this.profile,
   });
   factory Post.fromMap(Map<String, dynamic> map) {
     return Post(
