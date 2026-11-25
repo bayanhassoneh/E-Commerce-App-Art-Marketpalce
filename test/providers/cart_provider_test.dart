@@ -4,6 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:art_marketplace/providers/cart_provider.dart';
 import 'package:art_marketplace/services/cart_service.dart';
+//import 'package:supabase_flutter/supabase_flutter.dart';
 import '../helpers/test_data.dart';
 
 class MockCartService extends Mock implements CartService {}
@@ -51,8 +52,12 @@ void main() {
       var notified = 0;
       cartProvider.addListener(() => notified++);
       await cartProvider.addToCart(item);
-      expect(cartProvider.cartItems, isEmpty);
-      expect(actual, matcher)
+      expect(cartProvider.cartItems, item);
+      expect(cartProvider.errorMessage, isEmpty);
+      expect(notified, 1);
+      verify(
+        () => mockCartService.addToCart(item: item, userid: 'user'),
+      ).called(1);
     });
   });
 }

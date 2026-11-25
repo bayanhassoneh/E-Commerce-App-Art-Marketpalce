@@ -1,3 +1,4 @@
+import 'package:art_marketplace/core/utils/isar_helpers.dart';
 import 'package:art_marketplace/models/post.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:art_marketplace/models/cartItemModel.dart';
@@ -52,9 +53,10 @@ class CartService {
   }
 
   Future<void> removeFromCache(Post item) async {
-    final localItem = Cartitemmodel.fromPost(item);
+    // final localItem = Cartitemmodel.fromPost(item);
+    //ما حولتها لمودل الكارت لاني بستخدم الهاش مباشره بحيث انه id الايتم نفس isarId بس بتحول نوعه لint
     await isar.writeTxn(() async {
-      await isar.cartitemmodels.delete(localItem.isarId);
+      await isar.cartitemmodels.delete(fastHash(item.id));
     });
   }
 

@@ -68,21 +68,7 @@ const CartitemmodelSchema = CollectionSchema(
   deserialize: _cartitemmodelDeserialize,
   deserializeProp: _cartitemmodelDeserializeProp,
   idName: r'isarId',
-  indexes: {
-    r'id': IndexSchema(
-      id: -3268401673993471357,
-      name: r'id',
-      unique: true,
-      replace: false,
-      properties: [
-        IndexPropertySchema(
-          name: r'id',
-          type: IndexType.hash,
-          caseSensitive: true,
-        )
-      ],
-    )
-  },
+  indexes: {},
   links: {},
   embeddedSchemas: {},
   getId: _cartitemmodelGetId,
@@ -152,7 +138,6 @@ Cartitemmodel _cartitemmodelDeserialize(
     userProfilePicture: reader.readStringOrNull(offsets[7]),
     username: reader.readStringOrNull(offsets[8]),
   );
-  object.isarId = id;
   return object;
 }
 
@@ -195,64 +180,7 @@ List<IsarLinkBase<dynamic>> _cartitemmodelGetLinks(Cartitemmodel object) {
 }
 
 void _cartitemmodelAttach(
-    IsarCollection<dynamic> col, Id id, Cartitemmodel object) {
-  object.isarId = id;
-}
-
-extension CartitemmodelByIndex on IsarCollection<Cartitemmodel> {
-  Future<Cartitemmodel?> getById(String id) {
-    return getByIndex(r'id', [id]);
-  }
-
-  Cartitemmodel? getByIdSync(String id) {
-    return getByIndexSync(r'id', [id]);
-  }
-
-  Future<bool> deleteById(String id) {
-    return deleteByIndex(r'id', [id]);
-  }
-
-  bool deleteByIdSync(String id) {
-    return deleteByIndexSync(r'id', [id]);
-  }
-
-  Future<List<Cartitemmodel?>> getAllById(List<String> idValues) {
-    final values = idValues.map((e) => [e]).toList();
-    return getAllByIndex(r'id', values);
-  }
-
-  List<Cartitemmodel?> getAllByIdSync(List<String> idValues) {
-    final values = idValues.map((e) => [e]).toList();
-    return getAllByIndexSync(r'id', values);
-  }
-
-  Future<int> deleteAllById(List<String> idValues) {
-    final values = idValues.map((e) => [e]).toList();
-    return deleteAllByIndex(r'id', values);
-  }
-
-  int deleteAllByIdSync(List<String> idValues) {
-    final values = idValues.map((e) => [e]).toList();
-    return deleteAllByIndexSync(r'id', values);
-  }
-
-  Future<Id> putById(Cartitemmodel object) {
-    return putByIndex(r'id', object);
-  }
-
-  Id putByIdSync(Cartitemmodel object, {bool saveLinks = true}) {
-    return putByIndexSync(r'id', object, saveLinks: saveLinks);
-  }
-
-  Future<List<Id>> putAllById(List<Cartitemmodel> objects) {
-    return putAllByIndex(r'id', objects);
-  }
-
-  List<Id> putAllByIdSync(List<Cartitemmodel> objects,
-      {bool saveLinks = true}) {
-    return putAllByIndexSync(r'id', objects, saveLinks: saveLinks);
-  }
-}
+    IsarCollection<dynamic> col, Id id, Cartitemmodel object) {}
 
 extension CartitemmodelQueryWhereSort
     on QueryBuilder<Cartitemmodel, Cartitemmodel, QWhere> {
@@ -330,51 +258,6 @@ extension CartitemmodelQueryWhere
         upper: upperIsarId,
         includeUpper: includeUpper,
       ));
-    });
-  }
-
-  QueryBuilder<Cartitemmodel, Cartitemmodel, QAfterWhereClause> idEqualTo(
-      String id) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addWhereClause(IndexWhereClause.equalTo(
-        indexName: r'id',
-        value: [id],
-      ));
-    });
-  }
-
-  QueryBuilder<Cartitemmodel, Cartitemmodel, QAfterWhereClause> idNotEqualTo(
-      String id) {
-    return QueryBuilder.apply(this, (query) {
-      if (query.whereSort == Sort.asc) {
-        return query
-            .addWhereClause(IndexWhereClause.between(
-              indexName: r'id',
-              lower: [],
-              upper: [id],
-              includeUpper: false,
-            ))
-            .addWhereClause(IndexWhereClause.between(
-              indexName: r'id',
-              lower: [id],
-              includeLower: false,
-              upper: [],
-            ));
-      } else {
-        return query
-            .addWhereClause(IndexWhereClause.between(
-              indexName: r'id',
-              lower: [id],
-              includeLower: false,
-              upper: [],
-            ))
-            .addWhereClause(IndexWhereClause.between(
-              indexName: r'id',
-              lower: [],
-              upper: [id],
-              includeUpper: false,
-            ));
-      }
     });
   }
 }

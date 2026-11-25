@@ -1,12 +1,13 @@
 import 'package:isar/isar.dart';
 import 'post.dart';
+import 'package:art_marketplace/core/utils/isar_helpers.dart';
 part 'cartItemModel.g.dart';
 //نفس اسم الملف
 
 @collection
 class Cartitemmodel {
-  Id isarId = Isar.autoIncrement;
-  @Index(unique: true)
+  Id get isarId => fastHash(id);
+  // @Index(unique: true)
   late String id;
   late String artistId;
   late String title;
